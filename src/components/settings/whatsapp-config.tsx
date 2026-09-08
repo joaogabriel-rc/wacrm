@@ -86,6 +86,7 @@ export function WhatsAppConfig() {
   // a viewer's toggle would match zero rows and appear to work.
   const [mirrorMedia, setMirrorMedia] = useState(true);
   const [savingMirror, setSavingMirror] = useState(false);
+  const [connecting, setConnecting] = useState(false);
 
   // True once /register has succeeded on Meta's side (timestamp set
   // in the row). When false, the saved config is metadata-only and
@@ -410,6 +411,103 @@ export function WhatsAppConfig() {
     }
   }
 
+  // Load the Facebook JS SDK once when the component mounts.
+  // Required for the Embedded Signup popup.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (!process.env.NEXT_PUBLIC_META_APP_ID) return;
+    if (document.getElementById('facebook-jssdk')) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).fbAsyncInit = function () {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).FB.init({
+        appId: process.env.NEXT_PUBLIC_META_APP_ID,
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: 'v21.0',
+      });
+    };
+
+    const script = document.createElement('script');
+    script.id = 'facebook-jssdk';
+    script.src = 'https://connect.facebook.net/pt_BR/sdk.js';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  }, []);
+
+  async function handleSignupCode(code: string) {
+    try {
+      setConnecting(true);
+      const res = await fetch('/api/whatsapp/embedded-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        toast.error(data.error || 'Erro ao conectar. Tente novamente.');
+        return;
+      }
+
+      const phones = (data.phone_numbers ?? []) as Array<{
+        id: string;
+        display_phone_number: string;
+        verified_name: string;
+      }>;
+
+      if (phones.length === 0) {
+        toast.error('Nenhum número encontrado na conta WhatsApp Business.');
+        return;
+      }
+
+      const phone = phones[0];
+      setPhoneNumberId(phone.id);
+      setWabaId(data.waba_id);
+      setAccessToken(data.access_token);
+      setTokenEdited(true);
+
+      toast.success(
+        `Número ${phone.display_phone_number} detectado! Defina um Verify Token abaixo e clique em Salvar Configuração.`,
+        { duration: 10000 }
+      );
+    } catch (err) {
+      console.error('[embedded-signup]', err);
+      toast.error('Erro ao processar conexão. Tente novamente.');
+    } finally {
+      setConnecting(false);
+    }
+  }
+
+  function launchEmbeddedSignup() {
+    const configId = process.env.NEXT_PUBLIC_META_EMBEDDED_SIGNUP_CONFIG_ID;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const FB = (window as any).FB;
+
+    if (!FB) {
+      toast.error('Facebook SDK ainda carregando. Aguarde um segundo e tente novamente.');
+      return;
+    }
+
+    FB.login(
+      (response: { authResponse?: { code?: string } }) => {
+        if (response.authResponse?.code) {
+          handleSignupCode(response.authResponse.code);
+        } else {
+          toast.error('Conexão cancelada ou permissão negada.');
+        }
+      },
+      {
+        config_id: configId,
+        response_type: 'code',
+        override_default_response_type: true,
+        extras: { sessionInfoVersion: '2' },
+      }
+    );
+  }
+
   function handleCopyWebhookUrl() {
     navigator.clipboard.writeText(webhookUrl);
     toast.success('Webhook URL copied to clipboard');
@@ -596,6 +694,37 @@ export function WhatsAppConfig() {
               </div>
             )}
           </Alert>
+        )}
+
+        {/* Embedded Signup — connect via Meta popup (coexistence-friendly) */}
+        {process.env.NEXT_PUBLIC_META_APP_ID && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-foreground">Conectar via Meta (Recomendado)</CardTitle>
+              <CardDescription className="text-muted-foreground">
+                Abre o painel oficial da Meta para vincular seu número WhatsApp Business em modo coexistência — sem precisar copiar IDs manualmente.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button
+                onClick={launchEmbeddedSignup}
+                disabled={connecting || !canEditSettings}
+                className="bg-[#1877F2] hover:bg-[#166FE5] text-white gap-2"
+              >
+                {connecting ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+                    <path d="M10 0C4.48 0 0 4.48 0 10c0 4.99 3.66 9.12 8.44 9.88V12.89H5.9V10h2.54V7.8c0-2.51 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V10h2.77l-.44 2.89h-2.33v6.99C16.34 19.12 20 15 20 10c0-5.52-4.48-10-10-10z"/>
+                  </svg>
+                )}
+                {connecting ? 'Conectando...' : 'Conectar com WhatsApp Business'}
+              </Button>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Após conectar, defina um <strong>Verify Token</strong> abaixo e clique em Salvar.
+              </p>
+            </CardContent>
+          </Card>
         )}
 
         {/* API Credentials */}
