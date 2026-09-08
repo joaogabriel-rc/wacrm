@@ -318,13 +318,21 @@ export async function POST(request: Request) {
           })
           registeredAt = new Date().toISOString()
         } catch (err) {
-          registrationError =
-            err instanceof Error ? err.message : 'Unknown Meta API error'
-          console.error('Phone number /register failed:', registrationError)
-          // We deliberately fall through and still save the row so the
-          // user can retry without re-entering everything. The UI
-          // surfaces `last_registration_error` so they see WHY it's
-          // not actually live yet.
+          const message = err instanceof Error ? err.message : 'Unknown Meta API error'
+          // SMB (small business) WABAs are pre-registered by Meta — the
+          // /register endpoint is blocked for them. Treat this specific
+          // error as success: the number is already active and will
+          // receive inbound webhook events via the WABA subscription.
+          if (message.includes('Register endpoint is not available for SMB')) {
+            registeredAt = new Date().toISOString()
+          } else {
+            registrationError = message
+            console.error('Phone number /register failed:', registrationError)
+            // We deliberately fall through and still save the row so the
+            // user can retry without re-entering everything. The UI
+            // surfaces `last_registration_error` so they see WHY it's
+            // not actually live yet.
+          }
         }
       }
     }
