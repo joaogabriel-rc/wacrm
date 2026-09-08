@@ -1,0 +1,699 @@
+<title>Política de Privacidade — Axia CRM</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;450;500&display=swap">
+
+<style>
+  /* ── Tokens ── */
+  :root {
+    --bg:          #F8F7FC;
+    --bg-surface:  #EEEAF8;
+    --text:        #1B1929;
+    --text-2:      #5C5878;
+    --text-3:      #8F8BAA;
+    --accent:      #7C5CFC;
+    --accent-dim:  #EDE8FF;
+    --border:      #DDD8F4;
+    --border-2:    #C9C2EE;
+    --tag-bg:      #EDE8FF;
+    --tag-text:    #5B3FD4;
+    --mark-bg:     #F3F0FF;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:          #0F0F13;
+      --bg-surface:  #18172050;
+      --text:        #E5E2F4;
+      --text-2:      #9B97B8;
+      --text-3:      #5E5A78;
+      --accent:      #9D80FF;
+      --accent-dim:  #2A2245;
+      --border:      #2A2740;
+      --border-2:    #3A3660;
+      --tag-bg:      #241E42;
+      --tag-text:    #C4ADFF;
+      --mark-bg:     #1E1B36;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg:          #0F0F13;
+    --bg-surface:  #18172050;
+    --text:        #E5E2F4;
+    --text-2:      #9B97B8;
+    --text-3:      #5E5A78;
+    --accent:      #9D80FF;
+    --accent-dim:  #2A2245;
+    --border:      #2A2740;
+    --border-2:    #3A3660;
+    --tag-bg:      #241E42;
+    --tag-text:    #C4ADFF;
+    --mark-bg:     #1E1B36;
+  }
+
+  /* ── Reset ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 28px; height: 28px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+
+  .logo-icon svg { display: block; }
+
+  .logo-name {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -.01em;
+  }
+
+  .header-tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+
+  /* ── Layout ── */
+  .outer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .outer { grid-template-columns: 1fr; gap: 2rem; padding: 2.5rem 1.25rem 5rem; }
+    .toc { display: none; }
+  }
+
+  /* ── TOC ── */
+  .toc {
+    position: sticky;
+    top: 72px;
+  }
+
+  .toc-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: .75rem;
+  }
+
+  .toc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .toc-list a {
+    display: block;
+    font-size: 12.5px;
+    color: var(--text-2);
+    text-decoration: none;
+    padding: .3rem .5rem;
+    border-radius: 5px;
+    transition: color .15s, background .15s;
+    line-height: 1.4;
+  }
+
+  .toc-list a:hover {
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  /* ── Document ── */
+  .doc-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .doc-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--tag-text);
+    background: var(--tag-bg);
+    padding: .25rem .7rem;
+    border-radius: 99px;
+    margin-bottom: 1.25rem;
+  }
+
+  .doc-title {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    text-wrap: balance;
+    letter-spacing: -.02em;
+    margin-bottom: .75rem;
+  }
+
+  .doc-subtitle {
+    font-size: 15px;
+    color: var(--text-2);
+    max-width: 52ch;
+    line-height: 1.6;
+  }
+
+  .doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+
+  .meta-value {
+    font-size: 13px;
+    color: var(--text-2);
+  }
+
+  /* ── Sections ── */
+  .section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 80px;
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -.01em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 1.1em;
+    background: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .section p {
+    color: var(--text-2);
+    margin-bottom: .9rem;
+    max-width: 68ch;
+  }
+
+  .section p:last-child { margin-bottom: 0; }
+
+  /* ── Lists ── */
+  .data-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    margin: 1rem 0;
+  }
+
+  .data-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: .7rem;
+    color: var(--text-2);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .data-list li::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: .52em;
+    flex-shrink: 0;
+  }
+
+  /* ── Highlight box ── */
+  .highlight-box {
+    background: var(--mark-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+  }
+
+  .highlight-box p {
+    font-size: 13.5px;
+    color: var(--text-2);
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .highlight-box strong {
+    color: var(--text);
+  }
+
+  /* ── Rights grid ── */
+  .rights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: .75rem;
+    margin: 1.25rem 0;
+  }
+
+  .right-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: .875rem 1rem;
+  }
+
+  .right-card-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: .25rem;
+    font-family: 'Sora', sans-serif;
+  }
+
+  .right-card-desc {
+    font-size: 12px;
+    color: var(--text-3);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── Contact card ── */
+  .contact-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+
+  .contact-card-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    font-size: 13.5px;
+    color: var(--text-2);
+  }
+
+  .contact-row a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .contact-row a:hover { text-decoration: underline; }
+
+  /* ── Divider ── */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-3);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+
+  strong { color: var(--text); font-weight: 500; }
+
+  a { color: var(--accent); }
+</style>
+
+<!-- Header -->
+<header class="site-header">
+  <a href="https://crm.axiacompany.com.br" class="logo">
+    <div class="logo-icon">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M2 3.5C2 2.67 2.67 2 3.5 2h9C13.33 2 14 2.67 14 3.5v7c0 .83-.67 1.5-1.5 1.5H9l-3 2.5V12H3.5C2.67 12 2 11.33 2 10.5v-7z" fill="white" fill-opacity=".9"/>
+      </svg>
+    </div>
+    <span class="logo-name">Axia CRM</span>
+  </a>
+  <span class="header-tag">Documento Legal</span>
+</header>
+
+<!-- Main -->
+<div class="outer">
+
+  <!-- TOC -->
+  <nav class="toc" aria-label="Índice">
+    <p class="toc-label">Nesta página</p>
+    <ul class="toc-list">
+      <li><a href="#controlador">1. Controlador</a></li>
+      <li><a href="#dados">2. Dados coletados</a></li>
+      <li><a href="#uso">3. Como usamos</a></li>
+      <li><a href="#whatsapp">4. WhatsApp e Meta</a></li>
+      <li><a href="#compartilhamento">5. Compartilhamento</a></li>
+      <li><a href="#retencao">6. Retenção</a></li>
+      <li><a href="#seguranca">7. Segurança</a></li>
+      <li><a href="#direitos">8. Seus direitos (LGPD)</a></li>
+      <li><a href="#cookies">9. Cookies</a></li>
+      <li><a href="#menores">10. Menores</a></li>
+      <li><a href="#alteracoes">11. Alterações</a></li>
+      <li><a href="#contato">12. Contato</a></li>
+    </ul>
+  </nav>
+
+  <!-- Document -->
+  <main>
+    <div class="doc-header">
+      <div class="doc-eyebrow">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+        Em vigor
+      </div>
+      <h1 class="doc-title">Política de Privacidade</h1>
+      <p class="doc-subtitle">Axia CRM é uma plataforma de gestão de relacionamento com clientes via WhatsApp®. Este documento descreve como coletamos, usamos e protegemos os seus dados pessoais, em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
+      <div class="doc-meta">
+        <div class="meta-item">
+          <span class="meta-label">Vigência</span>
+          <span class="meta-value">08 de setembro de 2026</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Versão</span>
+          <span class="meta-value">1.0</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Jurisdição</span>
+          <span class="meta-value">Brasil — LGPD</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1 -->
+    <section class="section" id="controlador">
+      <h2 class="section-title">1. Quem somos — Controlador dos Dados</h2>
+      <p>O controlador dos dados pessoais tratados nesta plataforma é a <strong>Axia Company</strong>, responsável por determinar as finalidades e os meios do tratamento de dados pessoais no contexto do uso do Axia CRM.</p>
+      <p>Para questões relacionadas a esta Política ou ao exercício dos seus direitos, utilize os canais indicados na seção 12 (Contato).</p>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 2 -->
+    <section class="section" id="dados">
+      <h2 class="section-title">2. Dados que Coletamos</h2>
+      <p>Coletamos apenas os dados necessários para o funcionamento da plataforma, organizados em três categorias:</p>
+
+      <p><strong>Dados de cadastro e perfil</strong></p>
+      <ul class="data-list">
+        <li>Nome completo e endereço de e-mail (para criação e acesso à conta)</li>
+        <li>Senha (armazenada de forma criptografada — nunca em texto simples)</li>
+        <li>Foto de perfil (opcional, carregada pelo próprio usuário)</li>
+        <li>Função e data de ingresso na equipe</li>
+      </ul>
+
+      <p><strong>Dados operacionais da plataforma</strong></p>
+      <ul class="data-list">
+        <li>Credenciais da API do WhatsApp Business (Phone Number ID, WABA ID, Access Token) — armazenadas com criptografia AES-256-GCM</li>
+        <li>Contatos cadastrados: nome, telefone, e-mail, empresa, etiquetas e campos personalizados</li>
+        <li>Mensagens trocadas via WhatsApp, incluindo texto, mídia e metadados de entrega</li>
+        <li>Negócios (deals), notas, atividades e histórico de conversas</li>
+        <li>Configurações de automações, fluxos e modelos de mensagem</li>
+        <li>Chaves de API e webhooks cadastrados (secrets criptografados)</li>
+      </ul>
+
+      <p><strong>Dados técnicos e de uso</strong></p>
+      <ul class="data-list">
+        <li>Logs de acesso (horário, IP, navegador) para segurança e auditoria</li>
+        <li>Dados de sessão gerenciados pelo Supabase Auth</li>
+        <li>Preferências de interface (modo claro/escuro, idioma)</li>
+      </ul>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 3 -->
+    <section class="section" id="uso">
+      <h2 class="section-title">3. Como Usamos os Seus Dados</h2>
+      <ul class="data-list">
+        <li>Autenticar e identificar o usuário na plataforma</li>
+        <li>Permitir o envio e recebimento de mensagens via WhatsApp Business API</li>
+        <li>Exibir histórico de conversas, contatos e negócios no painel</li>
+        <li>Executar automações, fluxos e disparos em massa configurados pelo usuário</li>
+        <li>Gerar análises e relatórios de desempenho (dashboard)</li>
+        <li>Enviar notificações de eventos dentro da plataforma (atribuição de conversa, etc.)</li>
+        <li>Garantir a segurança da conta e detectar acessos não autorizados</li>
+        <li>Cumprir obrigações legais e regulatórias aplicáveis</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p><strong>Não vendemos dados.</strong> Nenhuma informação pessoal coletada nesta plataforma é comercializada, alugada ou cedida a terceiros para fins de marketing ou publicidade.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 4 -->
+    <section class="section" id="whatsapp">
+      <h2 class="section-title">4. Integração com WhatsApp e Meta</h2>
+      <p>O Axia CRM integra-se à <strong>WhatsApp Business Platform</strong> da Meta Platforms, Inc. Para que a plataforma funcione, compartilhamos dados com a Meta na medida necessária para:</p>
+      <ul class="data-list">
+        <li>Enviar e receber mensagens em nome da conta WhatsApp Business cadastrada</li>
+        <li>Sincronizar modelos de mensagem aprovados</li>
+        <li>Registrar webhooks para recebimento de eventos em tempo real</li>
+      </ul>
+      <p>O tratamento de dados pela Meta é regido pela <a href="https://www.whatsapp.com/legal/privacy-policy-eea" target="_blank" rel="noopener">Política de Privacidade do WhatsApp</a> e pelos <a href="https://developers.facebook.com/terms/" target="_blank" rel="noopener">Termos de Serviço da Meta para Desenvolvedores</a>, que são independentes desta Política.</p>
+      <p>Mídias recebidas via WhatsApp (fotos, vídeos, documentos) podem ser armazenadas no Supabase Storage da sua instância para preservação após o prazo de retenção da Meta (~30 dias). Esse comportamento pode ser desativado nas Configurações da plataforma.</p>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 5 -->
+    <section class="section" id="compartilhamento">
+      <h2 class="section-title">5. Compartilhamento de Dados</h2>
+      <p>Compartilhamos dados pessoais somente com os seguintes prestadores de serviço, na qualidade de operadores de dados, e exclusivamente para viabilizar o funcionamento da plataforma:</p>
+      <ul class="data-list">
+        <li><strong>Supabase Inc.</strong> — banco de dados PostgreSQL, autenticação de usuários e armazenamento de arquivos (servidores na AWS us-east-1)</li>
+        <li><strong>Vercel Inc.</strong> — hospedagem e execução da aplicação web</li>
+        <li><strong>Meta Platforms, Inc.</strong> — envio/recebimento de mensagens via WhatsApp Business API</li>
+        <li><strong>Provedores de IA (OpenAI / Anthropic)</strong> — somente se o assistente de IA for configurado pelo usuário, com a chave de API fornecida pelo próprio usuário</li>
+      </ul>
+      <p>Não compartilhamos dados com autoridades governamentais, salvo quando exigido por lei, decisão judicial ou autoridade reguladora competente, caso em que notificaremos o usuário sempre que legalmente permitido.</p>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 6 -->
+    <section class="section" id="retencao">
+      <h2 class="section-title">6. Retenção dos Dados</h2>
+      <p>Mantemos os dados pessoais pelo tempo necessário às finalidades para as quais foram coletados ou conforme exigido por lei:</p>
+      <ul class="data-list">
+        <li><strong>Dados de conta ativa:</strong> pelo período em que a conta permanecer ativa</li>
+        <li><strong>Logs de segurança:</strong> por até 12 meses</li>
+        <li><strong>Dados após encerramento da conta:</strong> excluídos em até 30 dias corridos após a solicitação de exclusão, salvo obrigação legal de retenção</li>
+        <li><strong>Backups:</strong> podem persistir por até 7 dias adicionais em sistemas de backup antes da exclusão completa</li>
+      </ul>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 7 -->
+    <section class="section" id="seguranca">
+      <h2 class="section-title">7. Segurança dos Dados</h2>
+      <p>Adotamos medidas técnicas e organizacionais compatíveis com o estado da arte para proteger os dados pessoais contra acesso não autorizado, perda, alteração ou divulgação indevida:</p>
+      <ul class="data-list">
+        <li>Criptografia em trânsito via TLS 1.2+ em todas as comunicações</li>
+        <li>Credenciais sensíveis (tokens de acesso, chaves de API, secrets de webhook, chaves de IA) criptografadas em repouso com AES-256-GCM</li>
+        <li>Senhas armazenadas com hash bcrypt pelo Supabase Auth</li>
+        <li>Row Level Security (RLS) no banco de dados para isolamento de dados entre contas</li>
+        <li>Autenticação com sessão segura e suporte a encerramento de sessão em todos os dispositivos</li>
+      </ul>
+      <div class="highlight-box">
+        <p>Em caso de incidente de segurança que possa afetar seus dados, você será notificado conforme exigido pela LGPD e pelas normas da ANPD.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 8 -->
+    <section class="section" id="direitos">
+      <h2 class="section-title">8. Seus Direitos — LGPD</h2>
+      <p>Como titular dos dados, você tem os seguintes direitos garantidos pela Lei nº 13.709/2018:</p>
+
+      <div class="rights-grid">
+        <div class="right-card">
+          <p class="right-card-title">Confirmação e acesso</p>
+          <p class="right-card-desc">Saber se tratamos seus dados e obter uma cópia deles.</p>
+        </div>
+        <div class="right-card">
+          <p class="right-card-title">Correção</p>
+          <p class="right-card-desc">Solicitar a atualização de dados incompletos ou incorretos.</p>
+        </div>
+        <div class="right-card">
+          <p class="right-card-title">Anonimização ou exclusão</p>
+          <p class="right-card-desc">Bloquear, anonimizar ou apagar dados desnecessários ou tratados em desconformidade.</p>
+        </div>
+        <div class="right-card">
+          <p class="right-card-title">Portabilidade</p>
+          <p class="right-card-desc">Receber seus dados em formato estruturado para transferência a outro serviço.</p>
+        </div>
+        <div class="right-card">
+          <p class="right-card-title">Revogação do consentimento</p>
+          <p class="right-card-desc">Retirar o consentimento a qualquer momento, quando o tratamento nele se basear.</p>
+        </div>
+        <div class="right-card">
+          <p class="right-card-title">Oposição</p>
+          <p class="right-card-desc">Opor-se a tratamentos realizados com base em legítimo interesse.</p>
+        </div>
+        <div class="right-card">
+          <p class="right-card-title">Informação sobre compartilhamento</p>
+          <p class="right-card-desc">Saber com quais entidades compartilhamos seus dados.</p>
+        </div>
+        <div class="right-card">
+          <p class="right-card-title">Reclamação à ANPD</p>
+          <p class="right-card-desc">Apresentar reclamação à Autoridade Nacional de Proteção de Dados.</p>
+        </div>
+      </div>
+
+      <p>Para exercer qualquer desses direitos, entre em contato pelos canais da seção 12. Responderemos em até <strong>15 dias úteis</strong>.</p>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 9 -->
+    <section class="section" id="cookies">
+      <h2 class="section-title">9. Cookies e Armazenamento Local</h2>
+      <p>Utilizamos cookies e armazenamento local exclusivamente para fins operacionais e de segurança:</p>
+      <ul class="data-list">
+        <li><strong>Cookies de sessão:</strong> gerenciados pelo Supabase Auth para manter o usuário autenticado</li>
+        <li><strong>Armazenamento local:</strong> preferências de interface (tema, idioma) salvas no dispositivo do usuário</li>
+      </ul>
+      <p>Não utilizamos cookies de rastreamento, analytics de terceiros ou publicidade comportamental.</p>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 10 -->
+    <section class="section" id="menores">
+      <h2 class="section-title">10. Menores de Idade</h2>
+      <p>O Axia CRM é uma plataforma destinada exclusivamente a pessoas jurídicas e profissionais maiores de 18 anos. Não coletamos intencionalmente dados pessoais de menores de idade. Se identificarmos que dados de um menor foram coletados inadvertidamente, procederemos à exclusão imediata.</p>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 11 -->
+    <section class="section" id="alteracoes">
+      <h2 class="section-title">11. Alterações a Esta Política</h2>
+      <p>Podemos atualizar esta Política periodicamente para refletir mudanças em nossas práticas ou na legislação aplicável. Alterações relevantes serão comunicadas por e-mail ou por aviso destacado dentro da plataforma com antecedência mínima de <strong>15 dias</strong> antes de entrarem em vigor.</p>
+      <p>A versão sempre vigente é a publicada nesta página. O histórico de versões está disponível mediante solicitação.</p>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 12 -->
+    <section class="section" id="contato">
+      <h2 class="section-title">12. Contato e Encarregado de Dados (DPO)</h2>
+      <p>Para exercer seus direitos, tirar dúvidas ou registrar uma solicitação relacionada a dados pessoais:</p>
+
+      <div class="contact-card">
+        <p class="contact-card-title">Axia Company — Encarregado de Dados</p>
+        <div class="contact-row">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 4.5l6 4 6-4" stroke="currentColor" stroke-width="1.3"/></svg>
+          <a href="mailto:privacidade@axiacompany.com.br">privacidade@axiacompany.com.br</a>
+        </div>
+        <div class="contact-row">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3.5l2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span>Resposta em até 15 dias úteis</span>
+        </div>
+        <div class="contact-row">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C4.79 1 3 2.79 3 5c0 3.25 4 8 4 8s4-4.75 4-8c0-2.21-1.79-4-4-4z" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="5" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
+          <span>Brasil</span>
+        </div>
+      </div>
+
+      <p style="margin-top:1rem;">Você também pode contatar a <strong>Autoridade Nacional de Proteção de Dados (ANPD)</strong> em <a href="https://www.gov.br/anpd" target="_blank" rel="noopener">gov.br/anpd</a>.</p>
+    </section>
+
+    <div class="doc-footer">
+      <span>© 2026 Axia Company. Todos os direitos reservados.</span>
+      <span>Política de Privacidade v1.0 — 08/09/2026</span>
+    </div>
+  </main>
+
+</div>
