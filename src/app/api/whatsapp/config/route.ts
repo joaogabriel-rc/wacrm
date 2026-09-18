@@ -274,7 +274,7 @@ export async function POST(request: Request) {
     // /register when the user didn't provide a PIN this time around.
     const { data: existing } = await supabase
       .from('whatsapp_config')
-      .select('id, registered_at, phone_number_id')
+      .select('id, registered_at, phone_number_id, verify_token')
       .eq('account_id', accountId)
       .maybeSingle()
 
@@ -365,7 +365,14 @@ export async function POST(request: Request) {
       phone_number_id,
       waba_id: waba_id || null,
       access_token: encryptedAccessToken,
-      verify_token: encryptedVerifyToken,
+      // Blank means "leave it alone", not "clear it". The form never
+      // re-displays a saved verify token (it isn't round-tripped to the
+      // client), so it comes back empty on every later save — a plain
+      // assignment would wipe it the next time anyone touches the PIN or
+      // the number. Meta then fails the callback-URL re-verification with
+      // no visible cause, which is the worst possible moment for it: that
+      // check runs during App Review.
+      verify_token: encryptedVerifyToken ?? existing?.verify_token ?? null,
       status: registrationError ? 'disconnected' : 'connected',
       connected_at: registrationError ? null : new Date().toISOString(),
       registered_at: registrationError ? null : registeredAt,
