@@ -19,7 +19,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { code } = await request.json()
+    // `waba_id` / `phone_number_id` come from the session info Meta
+    // posts back to the browser during Embedded Signup. They name
+    // exactly what the user picked, so when present they beat anything
+    // inferred below. Both are optional: older clients, and flows where
+    // the postMessage never arrived, still fall back to inference.
+    const { code, waba_id: pickedWabaId, phone_number_id: pickedPhoneId } =
+      await request.json()
     if (!code) {
       return NextResponse.json({ error: 'Missing code' }, { status: 400 })
     }
@@ -62,11 +68,12 @@ export async function POST(request: Request) {
     )
     const debugData = await debugRes.json()
 
-    let wabaId: string | null = null
+    let wabaId: string | null = pickedWabaId ?? null
     const granularScopes: Array<{ scope: string; target_ids?: string[] }> =
       debugData.data?.granular_scopes ?? []
 
     for (const scope of granularScopes) {
+      if (wabaId) break
       if (
         (scope.scope === 'whatsapp_business_management' ||
           scope.scope === 'whatsapp_business_messaging') &&
@@ -109,10 +116,20 @@ export async function POST(request: Request) {
     )
     const phoneData = await phoneRes.json()
 
+    // Surface the picked number first so the client doesn't have to
+    // guess when the WABA holds several.
+    const phoneNumbers: Array<{ id: string }> = phoneData.data ?? []
+    const ordered = pickedPhoneId
+      ? [
+          ...phoneNumbers.filter((p) => p.id === pickedPhoneId),
+          ...phoneNumbers.filter((p) => p.id !== pickedPhoneId),
+        ]
+      : phoneNumbers
+
     return NextResponse.json({
       access_token: accessToken,
       waba_id: wabaId,
-      phone_numbers: phoneData.data ?? [],
+      phone_numbers: ordered,
     })
   } catch (error) {
     console.error('[embedded-signup] Unhandled error:', error)

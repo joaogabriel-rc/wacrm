@@ -1559,7 +1559,13 @@
         "saveConfig": "Conferir as credenciais com a Meta e salvá-las",
         "testConnection": "Enviar uma requisição de teste à Meta para confirmar a conexão",
         "resetConfig": "Apagar as credenciais salvas e começar de novo"
-      }
+      },
+      "signupSdkLoading": "A biblioteca de login da Meta ainda está carregando. Aguarde um instante e tente de novo.",
+      "signupCancelled": "Conexão cancelada — a Meta não autorizou a solicitação.",
+      "signupNeedsToken": "Seu número foi vinculado na Meta, mas a Meta não devolveu um token de acesso para este app. Os IDs abaixo já foram preenchidos — cole um token de acesso permanente e clique em Salvar Configuração.",
+      "signupFailed": "Não foi possível concluir a conexão. Tente novamente.",
+      "signupNoNumbers": "Nenhum número de telefone encontrado nessa conta WhatsApp Business.",
+      "signupDetected": "Número {number} encontrado. Defina um Verify Token abaixo e clique em Salvar Configuração."
     },
     "sections": {
       "overview": "Visão geral",

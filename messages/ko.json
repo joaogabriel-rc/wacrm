@@ -1584,7 +1584,13 @@
         "saveConfig": "Check the credentials with Meta and save them",
         "testConnection": "Send a test request to Meta to confirm the connection works",
         "resetConfig": "Delete the saved credentials and start over"
-      }
+      },
+      "signupSdkLoading": "Meta's login library is still loading. Give it a second and try again.",
+      "signupCancelled": "Connection cancelled — Meta did not authorise the request.",
+      "signupNeedsToken": "Your number was linked at Meta, but Meta did not return an access token for this app. The IDs below were filled in for you — paste a permanent access token and click Save Configuration.",
+      "signupFailed": "Could not complete the connection. Please try again.",
+      "signupNoNumbers": "No phone number was found on that WhatsApp Business account.",
+      "signupDetected": "Found {number}. Set a Verify Token below and click Save Configuration."
     },
     "sections": {
       "overview": "개요",

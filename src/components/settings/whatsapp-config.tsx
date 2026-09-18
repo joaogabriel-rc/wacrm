@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/hooks/use-auth';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Hint } from '@/components/ui/hint';
 import { Input } from '@/components/ui/input';
@@ -35,11 +35,28 @@ import type { WhatsAppConfig as WhatsAppConfigType } from '@/types';
 
 const MASKED_TOKEN = '••••••••••••••••';
 
+/** Kept in step with the Graph version the server routes call. */
+const META_GRAPH_VERSION = 'v21.0';
+
+/** The WABA + phone number the user picked in Meta's Embedded Signup. */
+type SignupSession = {
+  phoneNumberId?: string;
+  wabaId?: string;
+};
+
+/** The `postMessage` Meta's signup window posts back to the opener. */
+type SignupMessage = {
+  type?: string;
+  event?: string;
+  data?: { phone_number_id?: string; waba_id?: string };
+};
+
 type ConnectionStatus = 'connected' | 'disconnected' | 'unknown';
 type ResetReason = 'token_corrupted' | 'meta_api_error' | null;
 
 export function WhatsAppConfig() {
   const t = useTranslations('Settings.whatsapp');
+  const locale = useLocale();
   const supabase = createClient();
   // After multi-user, whatsapp_config is one-row-per-account, not
   // one-row-per-user. We pull `accountId` straight off the auth
@@ -88,6 +105,10 @@ export function WhatsAppConfig() {
   const [mirrorMedia, setMirrorMedia] = useState(true);
   const [savingMirror, setSavingMirror] = useState(false);
   const [connecting, setConnecting] = useState(false);
+  // Written by the postMessage listener, read by the FB.login callback —
+  // a ref, not state, because nothing renders from it and the callback
+  // needs whatever arrived last, not what the last render closed over.
+  const signupSessionRef = useRef<SignupSession | null>(null);
 
   // True once /register has succeeded on Meta's side (timestamp set
   // in the row). When false, the saved config is metadata-only and
@@ -426,30 +447,97 @@ export function WhatsAppConfig() {
         appId: process.env.NEXT_PUBLIC_META_APP_ID,
         autoLogAppEvents: true,
         xfbml: true,
-        version: 'v21.0',
+        version: META_GRAPH_VERSION,
       });
     };
 
     const script = document.createElement('script');
     script.id = 'facebook-jssdk';
-    script.src = 'https://connect.facebook.net/pt_BR/sdk.js';
+    // Meta's window follows this locale. It has to track the app's own
+    // language — a reviewer running the app in English must not be
+    // dropped into a Portuguese login dialog.
+    script.src = `https://connect.facebook.net/${
+      locale === 'pt' ? 'pt_BR' : 'en_US'
+    }/sdk.js`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
+    // `locale` only picks the SDK script URL, and the SDK refuses to load
+    // twice (the `facebook-jssdk` guard above). Re-running on a language
+    // change would be a no-op, so it stays out of the dependency list.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function handleSignupCode(code: string) {
+  /**
+   * Relay the Embedded Signup result from Meta's window back to the form.
+   *
+   * With `sessionInfoVersion: 3` Meta reports which WABA and phone number
+   * the user picked over `postMessage`, NOT through the `FB.login`
+   * callback — that one only carries the auth code we exchange for a
+   * token. Both halves are needed, and they arrive separately, so the
+   * session half is parked here until the callback fires.
+   *
+   * Reading it also fixes a quieter bug: the old code took
+   * `phone_numbers[0]` off the WABA, which is simply the wrong number
+   * whenever the account has more than one.
+   */
+  useEffect(() => {
+    function onMessage(event: MessageEvent) {
+      if (
+        event.origin !== 'https://www.facebook.com' &&
+        event.origin !== 'https://web.facebook.com'
+      ) {
+        return;
+      }
+
+      let payload: SignupMessage | null = null;
+      try {
+        payload =
+          typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+      } catch {
+        // Meta shares this channel with unrelated, non-JSON chatter.
+        return;
+      }
+
+      if (!payload || payload.type !== 'WA_EMBEDDED_SIGNUP') return;
+
+      if (payload.event === 'CANCEL' || payload.event === 'ERROR') {
+        signupSessionRef.current = null;
+        return;
+      }
+
+      // Every terminal event name Meta uses across flow variants starts
+      // with FINISH (FINISH, FINISH_ONLY_WABA,
+      // FINISH_WHATSAPP_BUSINESS_APP_ONBOARDING for coexistence). Match
+      // on the prefix so a new variant doesn't silently drop the result.
+      if (payload.event?.startsWith('FINISH')) {
+        signupSessionRef.current = {
+          phoneNumberId: payload.data?.phone_number_id,
+          wabaId: payload.data?.waba_id,
+        };
+      }
+    }
+
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
+
+  async function handleSignupCode(code: string, session: SignupSession | null) {
     try {
       setConnecting(true);
       const res = await fetch('/api/whatsapp/embedded-signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({
+          code,
+          waba_id: session?.wabaId,
+          phone_number_id: session?.phoneNumberId,
+        }),
       });
       const data = await res.json();
 
       if (!res.ok || data.error) {
-        toast.error(data.error || 'Erro ao conectar. Tente novamente.');
+        toast.error(data.error || t('signupFailed'));
         return;
       }
 
@@ -460,23 +548,27 @@ export function WhatsAppConfig() {
       }>;
 
       if (phones.length === 0) {
-        toast.error('Nenhum número encontrado na conta WhatsApp Business.');
+        toast.error(t('signupNoNumbers'));
         return;
       }
 
-      const phone = phones[0];
+      // The number the user actually picked in Meta's window, when the
+      // session told us; first on the WABA only as a last resort.
+      const phone =
+        phones.find((p) => p.id === session?.phoneNumberId) ?? phones[0];
+
       setPhoneNumberId(phone.id);
       setWabaId(data.waba_id);
       setAccessToken(data.access_token);
       setTokenEdited(true);
 
       toast.success(
-        `Número ${phone.display_phone_number} detectado! Defina um Verify Token abaixo e clique em Salvar Configuração.`,
+        t('signupDetected', { number: phone.display_phone_number }),
         { duration: 10000 }
       );
     } catch (err) {
       console.error('[embedded-signup]', err);
-      toast.error('Erro ao processar conexão. Tente novamente.');
+      toast.error(t('signupFailed'));
     } finally {
       setConnecting(false);
     }
@@ -488,23 +580,47 @@ export function WhatsAppConfig() {
     const FB = (window as any).FB;
 
     if (!FB) {
-      toast.error('Facebook SDK ainda carregando. Aguarde um segundo e tente novamente.');
+      toast.error(t('signupSdkLoading'));
       return;
     }
 
+    // Stale result from a previous attempt would otherwise be mistaken
+    // for this one's.
+    signupSessionRef.current = null;
+
     FB.login(
       (response: { authResponse?: { code?: string } }) => {
-        if (response.authResponse?.code) {
-          handleSignupCode(response.authResponse.code);
-        } else {
-          toast.error('Conexão cancelada ou permissão negada.');
+        const session = signupSessionRef.current;
+        const code = response.authResponse?.code;
+
+        if (code) {
+          handleSignupCode(code, session);
+          return;
         }
+
+        // Meta finished the flow but returned no auth code — it does this
+        // when the number was linked through an account the app can't mint
+        // a token for. The linking itself DID happen (it shows as
+        // connected in WhatsApp Manager), so filling in the two IDs we do
+        // have turns a dead end into "paste a token and save" rather than
+        // sending the user back to square one.
+        if (session?.wabaId) {
+          setWabaId(session.wabaId);
+          if (session.phoneNumberId) setPhoneNumberId(session.phoneNumberId);
+          toast.warning(t('signupNeedsToken'), { duration: 12000 });
+          return;
+        }
+
+        toast.error(t('signupCancelled'));
       },
       {
+        // No `scope` here on purpose: `config_id` already carries the
+        // permission set configured in Meta, and sending both makes the
+        // dialog fall back to the plain login — which returns no auth
+        // code, the failure this replaces.
         config_id: configId,
         response_type: 'code',
         override_default_response_type: true,
-        scope: 'whatsapp_business_management,whatsapp_business_messaging,business_management',
         extras: {
           setup: {},
           featureType: 'whatsapp_business_app_onboarding',
