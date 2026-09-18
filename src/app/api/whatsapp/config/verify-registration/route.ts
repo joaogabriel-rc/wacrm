@@ -14,8 +14,8 @@ import {
  * surfaced the multi-number bug originally: "UI says Connected but
  * Meta isn't delivering events."
  *
- * Three checks run independently so the UI can show which step
- * passes and which fails:
+ * The checks run independently so the UI can show which step passes
+ * and which fails:
  *
  *   1. phone_info  — GET /{phone_number_id} succeeds
  *   2. waba_subscription — our app appears in
@@ -23,12 +23,24 @@ import {
  *   3. registered_at — local timestamp set by POST /config when
  *                    /register last succeeded; NULL means the
  *                    number was saved but never actually subscribed
+ *   4. server_accepts_webhooks — META_APP_SECRET is present. Meta
+ *                    signs every webhook POST with it and the route
+ *                    fails closed, so without it each delivery is
+ *                    rejected 401 and no message ever lands.
+ *   5. app_webhook_* — the app's own webhook registration: is a
+ *                    callback URL set, does it point at THIS
+ *                    deployment, and is `messages` among the
+ *                    subscribed fields.
+ *
+ * 4 and 5 are the ones that matter when every Meta-side check is green
+ * and the inbox is still empty: 1–3 describe Meta's state, and the
+ * failure lives on the last hop into this server.
  *
  * Returns 200 in every case so the UI can render diagnostic detail
  * rather than a generic error toast. The combined `live` flag is
  * what the UI badges on.
  */
-export async function GET() {
+export async function GET(request: Request) {
   const supabase = await createClient()
   const {
     data: { user },
@@ -90,12 +102,20 @@ export async function GET() {
     phone_metadata_ok: boolean
     waba_subscribed_to_app: boolean | null
     locally_marked_registered: boolean
+    server_accepts_webhooks: boolean
+    app_webhook_configured: boolean | null
+    app_webhook_points_here: boolean | null
+    app_subscribed_to_messages: boolean | null
   } = {
     config_exists: true,
     token_decryptable: true,
     phone_metadata_ok: false,
     waba_subscribed_to_app: null,
     locally_marked_registered: config.registered_at != null,
+    server_accepts_webhooks: false,
+    app_webhook_configured: null,
+    app_webhook_points_here: null,
+    app_subscribed_to_messages: null,
   }
   const errors: string[] = []
 
@@ -140,10 +160,104 @@ export async function GET() {
     )
   }
 
+  // 3. Can this server accept a delivery at all?
+  //
+  // Meta HMAC-signs every webhook POST with the app secret, and
+  // lib/whatsapp/webhook-signature.ts fails closed by design. A missing
+  // secret therefore rejects 100% of inbound messages with a 401 while
+  // every Meta-side check above still reports green — the number really
+  // is registered, the WABA really is subscribed, and the events really
+  // are being sent. They just bounce at the door.
+  const appId = process.env.NEXT_PUBLIC_META_APP_ID
+  const appSecret = process.env.META_APP_SECRET
+  checks.server_accepts_webhooks = Boolean(appSecret)
+
+  if (!appSecret) {
+    errors.push(
+      'META_APP_SECRET is not set on this server. Meta signs every webhook ' +
+        'delivery with it, and the webhook rejects unsigned requests, so no ' +
+        'inbound message can reach the inbox until it is configured. Add it ' +
+        'to your hosting environment variables (Meta → App settings → Basic ' +
+        '→ App secret) and redeploy.',
+    )
+  } else if (!appId) {
+    errors.push(
+      'NEXT_PUBLIC_META_APP_ID is not set, so the app webhook registration ' +
+        'could not be checked.',
+    )
+  } else {
+    // 4. The app's own webhook registration. Read with an app access
+    // token (`{id}|{secret}`) — this is app-level config, not WABA-level,
+    // so the user's access token can't see it.
+    try {
+      const res = await fetch(
+        `https://graph.facebook.com/v21.0/${appId}/subscriptions` +
+          `?access_token=${encodeURIComponent(`${appId}|${appSecret}`)}`,
+      )
+      const payload = (await res.json()) as {
+        data?: Array<{
+          object?: string
+          callback_url?: string
+          active?: boolean
+          fields?: Array<{ name?: string } | string>
+        }>
+        error?: { message?: string }
+      }
+
+      if (payload.error) {
+        errors.push(`App webhook check failed: ${payload.error.message}`)
+      } else {
+        const wa = (payload.data ?? []).find(
+          (o) => o.object === 'whatsapp_business_account',
+        )
+        checks.app_webhook_configured = Boolean(wa?.callback_url)
+
+        if (!wa) {
+          errors.push(
+            'This Meta app has no webhook registered for ' +
+              'whatsapp_business_account. Set the callback URL and verify ' +
+              'token in Meta → WhatsApp → Configuration.',
+          )
+        } else {
+          const fields = (wa.fields ?? []).map((f) =>
+            typeof f === 'string' ? f : (f.name ?? ''),
+          )
+          checks.app_subscribed_to_messages = fields.includes('messages')
+          if (!checks.app_subscribed_to_messages) {
+            errors.push(
+              'The app webhook is not subscribed to the `messages` field, so ' +
+                'Meta sends no inbound messages. Subscribe to it in Meta → ' +
+                'WhatsApp → Configuration → Webhook fields.',
+            )
+          }
+
+          // A callback URL pointing at another deployment (a tunnel left
+          // over from local development is the usual one) sends every
+          // event somewhere else, with nothing here to show for it.
+          const expected = new URL('/api/whatsapp/webhook', request.url).href
+          checks.app_webhook_points_here = wa.callback_url === expected
+          if (!checks.app_webhook_points_here) {
+            errors.push(
+              `The app webhook points at ${wa.callback_url ?? '(none)'}, not ` +
+                `${expected}. Events are being delivered to that address ` +
+                'instead of this one.',
+            )
+          }
+        }
+      }
+    } catch (err) {
+      errors.push(
+        `App webhook check failed: ${err instanceof Error ? err.message : String(err)}`,
+      )
+    }
+  }
+
   const live =
     checks.phone_metadata_ok &&
     (checks.waba_subscribed_to_app ?? false) &&
-    checks.locally_marked_registered
+    checks.locally_marked_registered &&
+    checks.server_accepts_webhooks &&
+    (checks.app_subscribed_to_messages ?? false)
 
   return NextResponse.json({
     live,
