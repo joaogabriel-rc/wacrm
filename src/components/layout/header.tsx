@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ModeToggle } from "@/components/layout/mode-toggle";
+import { Hint } from "@/components/ui/hint";
 
 const pageTitles: Record<string, string> = {
   "/dashboard": "dashboard",
@@ -60,14 +61,16 @@ export function Header({ onOpenSidebar }: HeaderProps) {
     <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border bg-background px-4 lg:px-6">
       <div className="flex min-w-0 items-center gap-2">
         {/* Hamburger — mobile only. 44×44 hit target per Apple HIG. */}
-        <button
-          type="button"
-          onClick={onOpenSidebar}
-          aria-label={t("openMenu")}
-          className="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
-        >
-          <Menu className="h-5 w-5" />
-        </button>
+        <Hint label={t("hints.openMenu")} side="bottom" align="start">
+          <button
+            type="button"
+            onClick={onOpenSidebar}
+            aria-label={t("openMenu")}
+            className="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </Hint>
         <h1 className="truncate text-base font-semibold text-foreground sm:text-lg">
           {t(titleKey as string)}
         </h1>
@@ -77,6 +80,8 @@ export function Header({ onOpenSidebar }: HeaderProps) {
         <ModeToggle />
 
         <DropdownMenu>
+        <Hint label={t("hints.accountMenu")} side="bottom" align="end">
+        <span className="inline-flex">
         <DropdownMenuTrigger
           className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-muted/70 focus:bg-muted/70 focus:outline-none data-popup-open:bg-muted/70 sm:gap-3 sm:pl-1 sm:pr-3"
           aria-label={t("openAccountMenu")}
@@ -96,6 +101,8 @@ export function Header({ onOpenSidebar }: HeaderProps) {
             {profile?.full_name ?? t("defaultUser")}
           </span>
         </DropdownMenuTrigger>
+        </span>
+        </Hint>
         <DropdownMenuContent
           align="end"
           sideOffset={6}

@@ -38,7 +38,20 @@
     "defaultAvatar": "Avatar",
     "menuProfile": "Profile",
     "menuSettings": "Settings",
-    "menuSignOut": "Sign out"
+    "menuSignOut": "Sign out",
+    "hints": {
+      "dashboard": "Overview of conversations, contacts and deal activity",
+      "inbox": "Read and reply to WhatsApp conversations",
+      "notifications": "Alerts about assignments, mentions and failed sends",
+      "contacts": "Everyone who has messaged you, with tags and custom fields",
+      "pipelines": "Track deals through your sales stages",
+      "broadcasts": "Send an approved template to many contacts at once",
+      "automations": "Rules that reply or tag on their own when something happens",
+      "flows": "Build multi-step conversations with branching replies",
+      "aiAgents": "Assistants that draft or send replies for you",
+      "settings": "WhatsApp connection, team, templates and account settings",
+      "accountMenu": "Open your profile, settings and sign out"
+    }
   },
   "Header": {
     "dashboard": "Dashboard",
@@ -55,7 +68,11 @@
     "defaultAvatar": "Avatar",
     "menuProfile": "Profile",
     "menuSettings": "Settings",
-    "menuSignOut": "Sign out"
+    "menuSignOut": "Sign out",
+    "hints": {
+      "openMenu": "Show the navigation menu",
+      "accountMenu": "Open your profile, settings and sign out"
+    }
   },
   "ModeToggle": {
     "switchMode": "Switch to {mode} mode"
@@ -190,6 +207,7 @@
       "typeMessagePlaceholder": "Type a message... (Shift+Enter for new line)",
       "readOnlyTitle": "Read-only — your role can't send messages",
       "recording": "Recording… {current} / {max}",
+
       "cancel": "Cancel",
       "stopAndAttach": "Stop and attach",
       "attachMedia": "Attach media",
@@ -209,7 +227,8 @@
       "send": "Send",
       "quickReplyNamePrompt": "Name this quick reply:",
       "quickReplySaved": "Saved as a quick reply.",
-      "quickReplySaveError": "Couldn't save the quick reply."
+      "quickReplySaveError": "Couldn't save the quick reply.",
+      "sendMessage": "Send this message"
     },
     "bubble": {
       "photo": "Photo",
@@ -276,6 +295,7 @@
       "urlSuffixValuePlaceholder": "URL suffix value",
       "finalUrl": "Final URL: {url}",
       "back": "Back",
+
       "cancel": "Cancel",
       "send": "Send template"
     },
@@ -333,6 +353,7 @@
       "pageCount": "Page {page} of {total}",
       "deleteContactTitle": "Delete Contact",
       "deleteContactDesc": "Are you sure you want to delete {name}? This action cannot be undone.",
+
       "cancel": "Cancel",
       "deleteBtn": "Delete",
       "deleteBulkTitle": "Delete Contacts",
@@ -361,6 +382,7 @@
       "tagsPlaceholder": "Select tags...",
       "noTagsFound": "No tags found.",
       "createTagAction": "Create tag \"{value}\"",
+
       "cancel": "Cancel",
       "save": "Save Contact",
       "update": "Update",
@@ -384,9 +406,9 @@
         "custom": "Custom Fields",
         "deals": "Deals",
         "tags": "Tags",
-      "noTags": "No tags",
-      "noDeals": "No deals",
-      "addNotePlaceholder": "Add a note..."
+        "noTags": "No tags",
+        "noDeals": "No deals",
+        "addNotePlaceholder": "Add a note..."
       },
       "actions": {
         "edit": "Edit",
@@ -464,6 +486,7 @@
         "company": "Company",
         "tags": "Tags"
       },
+
       "cancel": "Cancel",
       "close": "Close",
       "importBtn": "Import {count} contact",
@@ -513,6 +536,7 @@
       "pipelineName": "Pipeline Name",
       "pipelineNamePlaceholder": "e.g., Enterprise Sales",
       "defaultStagesDesc": "Default stages (New Lead → Won) will be created automatically.",
+
       "cancel": "Cancel",
       "creating": "Creating...",
       "createPipelineBtn": "Create Pipeline",
@@ -551,6 +575,7 @@
       "markAsWon": "Mark as Won",
       "markAsLost": "Mark as Lost",
       "reopenDeal": "Reopen deal",
+
       "cancel": "Cancel",
       "saving": "Saving...",
       "saveChanges": "Save Changes",
@@ -577,6 +602,7 @@
       "managePipeline": "Manage Pipeline",
       "deletePipeline": "Delete Pipeline",
       "deletePipelineDesc": "This will archive all deals in this pipeline. This cannot be undone.",
+
       "cancel": "Cancel",
       "deleting": "Deleting...",
       "deletePipelineBtn": "Delete Pipeline",
@@ -650,6 +676,7 @@
       "template": "Template: {name}",
       "createdAt": "Created {date}",
       "deletePrompt": "Delete this broadcast?",
+
       "cancel": "Cancel",
       "confirm": "Confirm",
       "deleting": "Deleting…",
@@ -710,6 +737,7 @@
     "wizard": {
       "next": "Next",
       "back": "Back",
+
       "cancel": "Cancel",
       "chooseTemplate": {
         "title": "Choose a Template",
@@ -821,6 +849,7 @@
       "duplicate": "Duplicate",
       "viewLogs": "View Logs",
       "delete": "Delete",
+
       "cancel": "Cancel",
       "deleteTitle": "Delete automation",
       "deleteDesc": "This permanently removes {name} and its execution history. This cannot be undone.",
@@ -1038,6 +1067,7 @@
       "nodeCount": "{count} {count, plural, =1 {node} other {nodes}}",
       "startBlank": "Or start blank",
       "placeholderName": "e.g. Welcome menu",
+
       "cancel": "Cancel",
       "createBlank": "Create blank flow",
       "runCount": "{count} {count, plural, =1 {run} other {runs}}",
@@ -1283,6 +1313,7 @@
       "revokedToast": "Invitation revoked",
       "removeDialogTitle": "Remove member",
       "removeDialogDesc": "Remove <bold>{name}</bold> from the account? They'll be signed out of this account and given a fresh personal account on their next sign-in. Their login isn't deleted.",
+
       "cancel": "Cancel",
       "removing": "Removing...",
       "removeBtn": "Remove member"
@@ -1307,6 +1338,7 @@
       "optional": "(optional)",
       "labelPlaceholder": "e.g. Sara — support team",
       "labelHint": "Helps you remember who you sent the link to in the pending list below.",
+
       "cancel": "Cancel",
       "creating": "Creating...",
       "generateLink": "Generate link",
@@ -1337,6 +1369,7 @@
       "addTag": "Add tag",
       "deleteTag": "Delete tag",
       "deleteConfirm": "Delete the tag \"{name}\"? This removes it from all contacts and cannot be undone.",
+
       "cancel": "Cancel",
       "deleting": "Deleting...",
       "colors": {
@@ -1369,13 +1402,13 @@
       "deleteLocallyAria": "Delete template locally",
       "deleteMetaLocallyTitle": "Delete from Meta and locally",
       "deleteLocallyTitle": "Delete locally",
-      
+
       "dialogEditTitle": "Edit Message Template",
       "dialogNewTitle": "New Message Template",
       "dialogEditDesc": "Save your changes to re-submit to Meta. Status will flip back to PENDING during review.",
       "dialogNewDesc": "Build a template and submit it to Meta for approval. Once approved, you can use it in broadcasts and the inbox.",
       "authWarning": "AUTHENTICATION templates have a fixed body + OTP button shape that needs a different builder. Create them in Meta WhatsApp Manager for now and use <bold>Sync from Meta</bold> to bring them in.",
-      
+
       "templateName": "Template Name",
       "namePlaceholder": "e.g. order_confirmation",
       "nameFixed": "Name is fixed once a template exists on Meta — create a new template to change it.",
@@ -1384,7 +1417,7 @@
       "language": "Language",
       "langFixed": "Language is fixed once a template exists on Meta.",
       "langHint": "Must match the exact code on Meta — <code>en_US</code> and <code>en</code> are distinct.",
-      
+
       "header": "Header",
       "headerNone": "None",
       "headerText": "Text",
@@ -1394,7 +1427,7 @@
       "headerTextPlaceholder": "Header text (max 60 chars, optional {{1}})",
       "headerSampleAria": "Sample value for header variable",
       "headerSamplePlaceholder": "Sample value for {{1}} (required for Meta review)",
-      
+
       "uploadImage": "Upload image",
       "uploadHint": "JPEG or PNG, ≤5 MB",
       "mediaUrlPlaceholder": "https://… (or paste a public {format} link)",
@@ -1402,17 +1435,17 @@
       "mediaHint": "Must be a publicly accessible HTTPS link. Meta fetches it once during review, so it needs to stay live for ~24 hrs.",
       "videoHint": " Recommended: MP4 / 3GPP, ≤16 MB, ≤60 seconds.",
       "documentHint": " Recommended: PDF, ≤100 MB.",
-      
+
       "bodyText": "Body Text",
       "bodyPlaceholder": "Hello {{1}}, your order {{2}} is confirmed.",
       "bodyHint": "Use {{1}}, {{2}} for variables (must be contiguous starting at {{1}}).",
       "sampleValues": "Sample values (Meta uses these to review your template)",
       "sampleAria": "Sample value for body variable {var}",
       "samplePlaceholder": "Sample for {var}",
-      
+
       "footer": "Footer (optional)",
       "footerPlaceholder": "Optional footer text (max 60 chars)",
-      
+
       "buttons": "Buttons (optional)",
       "addButton": "Add Button",
       "buttonsLimit": "Up to {max} buttons. QUICK_REPLY buttons must come before URL / phone / copy-code buttons.",
@@ -1425,19 +1458,19 @@
       "urlSamplePlaceholder": "Example value for {{1}} (required when URL has a variable)",
       "phonePlaceholder": "+15551234567",
       "codePlaceholder": "Example code (e.g. SUMMER20)",
-      
+
       "cancel": "Cancel",
       "saving": "Saving…",
       "submitting": "Submitting…",
       "saveResubmit": "Save & Resubmit",
       "submitApproval": "Submit for Approval",
-      
+
       "deleteDialogTitle": "Delete template?",
       "deleteMetaDesc": "\"{name}\" will be deleted from Meta and from wacrm. Active broadcasts using this template will start failing on their next send. This can't be undone.",
       "deleteLocalDesc": "\"{name}\" will be deleted from wacrm. It was never submitted to Meta, so no remote cleanup is needed.",
       "deleting": "Deleting…",
       "delete": "Delete",
-      
+
       "toastLoadFailed": "Failed to load templates",
       "toastSubmitFailed": "Failed to submit",
       "toastSubmitEditSuccess": "Edit submitted — Meta typically reviews within 24 hours.",
@@ -1536,7 +1569,22 @@
       "step4_3": "Paste the <strong class=\"text-foreground\">Webhook Callback URL</strong> from above",
       "step4_4": "Enter the same <strong class=\"text-foreground\">Verify Token</strong> you set here",
       "step4_5": "Subscribe to \"messages\" webhook field",
-      "metaDocs": "Meta WhatsApp API Documentation"
+      "metaDocs": "Meta WhatsApp API Documentation",
+      "signupTitle": "Connect through Meta (recommended)",
+      "signupDesc": "Opens Meta's own panel to link your WhatsApp Business number in coexistence mode, so you keep using the phone app. No IDs to copy by hand.",
+      "signupCta": "Connect WhatsApp Business",
+      "signupConnecting": "Connecting…",
+      "signupAfter": "Once connected, set a Verify Token below and click Save Configuration.",
+      "hints": {
+        "connectMeta": "Opens Meta's login window to link your number",
+        "verifyWithMeta": "Ask Meta whether this number can receive messages right now",
+        "showToken": "Show the access token",
+        "hideToken": "Hide the access token",
+        "copyWebhook": "Copy this address to paste into Meta",
+        "saveConfig": "Check the credentials with Meta and save them",
+        "testConnection": "Send a test request to Meta to confirm the connection works",
+        "resetConfig": "Delete the saved credentials and start over"
+      }
     },
     "sections": {
       "overview": "Overview",
@@ -1583,7 +1631,7 @@
       "profileSaved": "Profile saved",
       "emailChangeFailed": "Email change failed: {message}",
       "profileSavedEmailCheck": "Profile saved — check your email to confirm the address change",
-      
+
       "passwordTitle": "Password",
       "passwordDesc": "Use at least {min} characters. You will stay signed in on this device after changing it.",
       "currentPassword": "Current password",
@@ -1597,12 +1645,13 @@
       "currentPasswordIncorrect": "Current password is incorrect",
       "passwordUpdateFailed": "Password update failed: {message}",
       "passwordUpdated": "Password updated",
-      
+
       "sessionsTitle": "Active sessions",
       "sessionsDesc": "Sign out of every device where you're logged in — including this one. Useful if you lost a laptop or shared your password.",
       "signOutAll": "Sign out of all devices",
       "signOutConfirmTitle": "Sign out everywhere?",
       "signOutConfirmDesc": "Every device logged into this account will be signed out and will need to log in again. You will be redirected to the login page.",
+
       "cancel": "Cancel",
       "signingOut": "Signing out…",
       "signOutEverywhere": "Sign out everywhere",
@@ -1648,6 +1697,7 @@
       "namePlaceholder": "e.g. Zapier automation",
       "scopesLabel": "Scopes",
       "scopesHint": "A key with no scopes can still call <code>GET /api/v1/me</code> to verify it works.",
+
       "cancel": "Cancel",
       "creating": "Creating…",
       "createKey": "Create key",
@@ -1734,12 +1784,26 @@
       "editDocTitlePlaceholder": "e.g. Returns & refunds policy",
       "editDocContent": "Content",
       "editDocContentPlaceholder": "Paste the FAQ answer, policy text, or product details…",
+
       "cancel": "Cancel",
       "saveDoc": "Save document",
       "addDoc": "Add document",
       "reindex": "Reindex",
       "reindexTooltip": "Re-embed all documents (e.g. after adding an embeddings key)",
       "loading": "Loading…"
+    },
+    "sectionHints": {
+      "overview": "Status of every part of your workspace at a glance",
+      "profile": "Your name, photo and email address",
+      "security": "Change your password and sign out of other devices",
+      "appearance": "Interface language, light or dark mode, accent colour",
+      "whatsapp": "Connect your WhatsApp Business number to this CRM",
+      "templates": "Message templates you submit to Meta for approval",
+      "quick-replies": "Saved replies your team can insert while chatting",
+      "fields": "Custom contact fields and the tags used to segment people",
+      "deals": "Pipeline stages and the currency deals are valued in",
+      "members": "Invite teammates and set what each of them can do",
+      "api": "Keys for connecting other software to this CRM"
     }
   }
 }

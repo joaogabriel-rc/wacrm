@@ -18,6 +18,7 @@ import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/hooks/use-auth';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
+import { Hint } from '@/components/ui/hint';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -629,6 +630,7 @@ export function WhatsAppConfig() {
                     : t('notRegistered')}
                 </AlertTitle>
               </div>
+              <Hint label={t('hints.verifyWithMeta')}>
               <Button
                 variant="outline"
                 size="sm"
@@ -643,6 +645,7 @@ export function WhatsAppConfig() {
                 )}
                 {t('verifyWithMeta')}
               </Button>
+              </Hint>
             </div>
             <AlertDescription className="text-muted-foreground mt-2 text-xs leading-relaxed">
               {isRegistered ? (
@@ -706,12 +709,13 @@ export function WhatsAppConfig() {
         {process.env.NEXT_PUBLIC_META_APP_ID && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-foreground">Conectar via Meta (Recomendado)</CardTitle>
+              <CardTitle className="text-foreground">{t('signupTitle')}</CardTitle>
               <CardDescription className="text-muted-foreground">
-                Abre o painel oficial da Meta para vincular seu número WhatsApp Business em modo coexistência — sem precisar copiar IDs manualmente.
+                {t('signupDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
+              <Hint label={t('hints.connectMeta')}>
               <Button
                 onClick={launchEmbeddedSignup}
                 disabled={connecting || !canEditSettings}
@@ -724,10 +728,11 @@ export function WhatsAppConfig() {
                     <path d="M10 0C4.48 0 0 4.48 0 10c0 4.99 3.66 9.12 8.44 9.88V12.89H5.9V10h2.54V7.8c0-2.51 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V10h2.77l-.44 2.89h-2.33v6.99C16.34 19.12 20 15 20 10c0-5.52-4.48-10-10-10z"/>
                   </svg>
                 )}
-                {connecting ? 'Conectando...' : 'Conectar com WhatsApp Business'}
+                {connecting ? t('signupConnecting') : t('signupCta')}
               </Button>
+              </Hint>
               <p className="mt-2 text-xs text-muted-foreground">
-                Após conectar, defina um <strong>Verify Token</strong> abaixo e clique em Salvar.
+                {t('signupAfter')}
               </p>
             </CardContent>
           </Card>
@@ -781,13 +786,16 @@ export function WhatsAppConfig() {
                   }}
                   className="bg-muted border-border text-foreground placeholder:text-muted-foreground pr-10"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowToken(!showToken)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {showToken ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                </button>
+                <Hint label={showToken ? t('hints.hideToken') : t('hints.showToken')}>
+                  <button
+                    type="button"
+                    onClick={() => setShowToken(!showToken)}
+                    aria-label={showToken ? t('hints.hideToken') : t('hints.showToken')}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showToken ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                  </button>
+                </Hint>
               </div>
               {config && !tokenEdited && (
                 <p className="text-xs text-muted-foreground">
@@ -849,14 +857,17 @@ export function WhatsAppConfig() {
                   value={webhookUrl}
                   className="bg-muted border-border text-muted-foreground font-mono text-sm"
                 />
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handleCopyWebhookUrl}
-                  className="shrink-0 border-border text-muted-foreground hover:text-foreground hover:bg-muted"
-                >
-                  <Copy className="size-4" />
-                </Button>
+                <Hint label={t('hints.copyWebhook')}>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handleCopyWebhookUrl}
+                    aria-label={t('hints.copyWebhook')}
+                    className="shrink-0 border-border text-muted-foreground hover:text-foreground hover:bg-muted"
+                  >
+                    <Copy className="size-4" />
+                  </Button>
+                </Hint>
               </div>
             </div>
           </CardContent>
@@ -901,6 +912,7 @@ export function WhatsAppConfig() {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-3">
+          <Hint label={t('hints.saveConfig')}>
           <Button
             onClick={handleSave}
             disabled={saving}
@@ -915,6 +927,8 @@ export function WhatsAppConfig() {
               t('saveConfig')
             )}
           </Button>
+          </Hint>
+          <Hint label={t('hints.testConnection')}>
           <Button
             variant="outline"
             onClick={handleTestConnection}
@@ -933,7 +947,9 @@ export function WhatsAppConfig() {
               </>
             )}
           </Button>
+          </Hint>
           {config && (
+            <Hint label={t('hints.resetConfig')}>
             <Button
               variant="outline"
               onClick={handleReset}
@@ -952,6 +968,7 @@ export function WhatsAppConfig() {
                 </>
               )}
             </Button>
+            </Hint>
           )}
         </div>
       </div>

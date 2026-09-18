@@ -27,6 +27,7 @@ import {
   Zap,
 } from "lucide-react";
 import type { AccountRole } from "@/lib/auth/roles";
+import { Hint } from "@/components/ui/hint";
 
 // Per-role chip metadata used in the sidebar's account strip + the
 // Members tab roster. Keeping this near both consumers in a single
@@ -82,6 +83,8 @@ interface NavItem {
   href: string;
   labelKey: string;
   icon: typeof LayoutDashboard;
+  /** Keypath under `Sidebar.hints` — one line on what the section is for. */
+  hintKey: string;
   /**
    * When true, the nav row renders a small "Beta" chip after the label.
    * Purely informational — doesn't affect routing or access.
@@ -90,19 +93,19 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
-  { href: "/inbox", labelKey: "inbox", icon: MessageSquare },
-  { href: "/notifications", labelKey: "notifications", icon: Bell },
-  { href: "/contacts", labelKey: "contacts", icon: Users },
-  { href: "/pipelines", labelKey: "pipelines", icon: GitBranch },
-  { href: "/broadcasts", labelKey: "broadcasts", icon: Radio },
-  { href: "/automations", labelKey: "automations", icon: Zap },
-  { href: "/flows", labelKey: "flows", icon: Workflow, beta: true },
-  { href: "/agents", labelKey: "aiAgents", icon: Bot },
+  { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard, hintKey: "dashboard" },
+  { href: "/inbox", labelKey: "inbox", icon: MessageSquare, hintKey: "inbox" },
+  { href: "/notifications", labelKey: "notifications", icon: Bell, hintKey: "notifications" },
+  { href: "/contacts", labelKey: "contacts", icon: Users, hintKey: "contacts" },
+  { href: "/pipelines", labelKey: "pipelines", icon: GitBranch, hintKey: "pipelines" },
+  { href: "/broadcasts", labelKey: "broadcasts", icon: Radio, hintKey: "broadcasts" },
+  { href: "/automations", labelKey: "automations", icon: Zap, hintKey: "automations" },
+  { href: "/flows", labelKey: "flows", icon: Workflow, beta: true, hintKey: "flows" },
+  { href: "/agents", labelKey: "aiAgents", icon: Bot, hintKey: "aiAgents" },
 ];
 
-const bottomNavItems = [
-  { href: "/settings", labelKey: "settings", icon: Settings },
+const bottomNavItems: NavItem[] = [
+  { href: "/settings", labelKey: "settings", icon: Settings, hintKey: "settings" },
 ];
 
 interface SidebarProps {
@@ -225,6 +228,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
 
               return (
                 <li key={item.href}>
+                  <Hint label={t(`hints.${item.hintKey}` as string)} side="right">
                   <Link
                     href={item.href}
                     className={cn(
@@ -263,6 +267,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                       </span>
                     )}
                   </Link>
+                  </Hint>
                 </li>
               );
             })}
@@ -275,6 +280,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
               const isActive = pathname.startsWith(item.href);
               return (
                 <li key={item.href}>
+                  <Hint label={t(`hints.${item.hintKey}` as string)} side="right">
                   <Link
                     href={item.href}
                     className={cn(
@@ -287,6 +293,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                     <item.icon className="h-4 w-4" />
                     {t(item.labelKey as string)}
                   </Link>
+                  </Hint>
                 </li>
               );
             })}
@@ -331,6 +338,8 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
             </div>
           ) : null}
           <DropdownMenu>
+            <Hint label={t("hints.accountMenu")} side="top">
+            <span className="block w-full">
             <DropdownMenuTrigger className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted/60 focus:bg-muted/60 focus:outline-none data-popup-open:bg-muted/60">
               <Avatar className="size-8 shrink-0">
                 {profile?.avatar_url ? (
@@ -354,6 +363,8 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                 </p>
               </div>
             </DropdownMenuTrigger>
+            </span>
+            </Hint>
             <DropdownMenuContent
               align="end"
               side="top"

@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GatedButton } from "@/components/ui/gated-button";
+import { Hint } from "@/components/ui/hint";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -619,28 +620,34 @@ export function MessageComposer({
           >
             {t("cancel")}
           </button>
-          <Button
-            size="sm"
-            onClick={stopRecording}
-            className="h-9 w-9 shrink-0 bg-primary p-0 hover:bg-primary/90"
-            title={t("stopAndAttach")}
-          >
-            <Square className="h-4 w-4" />
-          </Button>
+          <Hint label={t("stopAndAttach")}>
+            <Button
+              size="sm"
+              onClick={stopRecording}
+              aria-label={t("stopAndAttach")}
+              className="h-9 w-9 shrink-0 bg-primary p-0 hover:bg-primary/90"
+            >
+              <Square className="h-4 w-4" />
+            </Button>
+          </Hint>
         </div>
       ) : (
         <div className="flex items-end gap-2">
           {/* Attach menu — photo / video / document / voice. */}
           <DropdownMenu>
-            <DropdownMenuTrigger
-              disabled={inputsDisabled || busy}
-              title={
+            <Hint
+              label={
                 readOnly
                   ? t("readOnlyTitle")
                   : inputsDisabled
                     ? undefined
                     : t("attachMedia")
               }
+            >
+            <span className="inline-flex">
+            <DropdownMenuTrigger
+              disabled={inputsDisabled || busy}
+              aria-label={t("attachMedia")}
               className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md p-0 text-muted-foreground hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
             >
               {busy ? (
@@ -649,6 +656,8 @@ export function MessageComposer({
                 <Paperclip className="h-4 w-4" />
               )}
             </DropdownMenuTrigger>
+            </span>
+            </Hint>
             <DropdownMenuContent align="start" className="border-border bg-popover">
               <DropdownMenuItem onClick={() => imageInputRef.current?.click()}>
                 <ImageIcon className="mr-2 h-4 w-4" />
@@ -672,19 +681,25 @@ export function MessageComposer({
           {/* + menu — interactive messages + quick replies. Gated on the
               24h window like free-form text (interactive requires it). */}
           <DropdownMenu>
-            <DropdownMenuTrigger
-              disabled={inputsDisabled}
-              title={
+            <Hint
+              label={
                 readOnly
                   ? t("readOnlyTitle")
                   : inputsDisabled
                     ? undefined
                     : t("moreActions")
               }
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md p-0 text-muted-foreground hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <Plus className="h-4 w-4" />
-            </DropdownMenuTrigger>
+              <span className="inline-flex">
+              <DropdownMenuTrigger
+                disabled={inputsDisabled}
+                aria-label={t("moreActions")}
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md p-0 text-muted-foreground hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Plus className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              </span>
+            </Hint>
             <DropdownMenuContent align="start" className="border-border bg-popover">
               <DropdownMenuItem onClick={() => openInteractiveBuilder()}>
                 <MessageSquareDashed className="mr-2 h-4 w-4" />
@@ -697,34 +712,42 @@ export function MessageComposer({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <GatedButton
-            variant="ghost"
-            size="sm"
-            canAct={!readOnly}
-            gateReason="send messages"
-            title={readOnly ? undefined : t("sendTemplate")}
-            className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:text-foreground"
-            onClick={onOpenTemplates}
-          >
-            <LayoutTemplate className="h-4 w-4" />
-          </GatedButton>
+          <Hint label={readOnly ? undefined : t("sendTemplate")}>
+            <span className="inline-flex">
+              <GatedButton
+                variant="ghost"
+                size="sm"
+                canAct={!readOnly}
+                gateReason="send messages"
+                aria-label={t("sendTemplate")}
+                className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:text-foreground"
+                onClick={onOpenTemplates}
+              >
+                <LayoutTemplate className="h-4 w-4" />
+              </GatedButton>
+            </span>
+          </Hint>
 
-          <GatedButton
-            variant="ghost"
-            size="sm"
-            canAct={!readOnly}
-            gateReason="send messages"
-            disabled={drafting}
-            title={readOnly ? undefined : t("draftWithAI")}
-            className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:text-primary"
-            onClick={handleDraft}
-          >
-            {drafting ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Sparkles className="h-4 w-4" />
-            )}
-          </GatedButton>
+          <Hint label={readOnly ? undefined : t("draftWithAI")}>
+            <span className="inline-flex">
+              <GatedButton
+                variant="ghost"
+                size="sm"
+                canAct={!readOnly}
+                gateReason="send messages"
+                disabled={drafting}
+                aria-label={t("draftWithAI")}
+                className="h-9 w-9 shrink-0 p-0 text-muted-foreground hover:text-primary"
+                onClick={handleDraft}
+              >
+                {drafting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Sparkles className="h-4 w-4" />
+                )}
+              </GatedButton>
+            </span>
+          </Hint>
 
           <textarea
             ref={textareaRef}
@@ -750,16 +773,21 @@ export function MessageComposer({
             )}
           />
 
-          <GatedButton
-            size="sm"
-            canAct={!readOnly}
-            gateReason="send messages"
-            disabled={!text.trim() || sessionExpired || sending}
-            onClick={handleSend}
-            className="h-9 w-9 shrink-0 bg-primary p-0 hover:bg-primary/90 disabled:opacity-40"
-          >
-            <Send className="h-4 w-4" />
-          </GatedButton>
+          <Hint label={readOnly ? undefined : t("sendMessage")}>
+            <span className="inline-flex">
+              <GatedButton
+                size="sm"
+                canAct={!readOnly}
+                gateReason="send messages"
+                disabled={!text.trim() || sessionExpired || sending}
+                onClick={handleSend}
+                aria-label={t("sendMessage")}
+                className="h-9 w-9 shrink-0 bg-primary p-0 hover:bg-primary/90 disabled:opacity-40"
+              >
+                <Send className="h-4 w-4" />
+              </GatedButton>
+            </span>
+          </Hint>
         </div>
       )}
 

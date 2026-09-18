@@ -4,6 +4,7 @@ import { Moon, Sun } from "lucide-react";
 
 import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
+import { Hint } from "@/components/ui/hint";
 
 import { useTranslations } from "next-intl";
 
@@ -22,21 +23,25 @@ export function ModeToggle({ className }: { className?: string }) {
   const switchLabel = t("switchMode", { mode: goingTo });
   
   return (
-    <button
-      type="button"
-      onClick={toggleMode}
-      aria-label={switchLabel}
-      title={switchLabel}
-      className={cn(
-        "flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-        className,
-      )}
-    >
-      {mode === "dark" ? (
-        <Moon className="h-5 w-5" />
-      ) : (
-        <Sun className="h-5 w-5" />
-      )}
-    </button>
+    // `title` is deliberately dropped now that a Hint renders the same
+    // string — leaving both makes the browser's native tooltip fire
+    // alongside ours, showing the text twice.
+    <Hint label={switchLabel} side="bottom">
+      <button
+        type="button"
+        onClick={toggleMode}
+        aria-label={switchLabel}
+        className={cn(
+          "flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+          className,
+        )}
+      >
+        {mode === "dark" ? (
+          <Moon className="h-5 w-5" />
+        ) : (
+          <Sun className="h-5 w-5" />
+        )}
+      </button>
+    </Hint>
   );
 }

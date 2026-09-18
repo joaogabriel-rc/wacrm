@@ -38,7 +38,20 @@
     "defaultAvatar": "아바타",
     "menuProfile": "프로필",
     "menuSettings": "설정",
-    "menuSignOut": "로그아웃"
+    "menuSignOut": "로그아웃",
+    "hints": {
+      "dashboard": "Overview of conversations, contacts and deal activity",
+      "inbox": "Read and reply to WhatsApp conversations",
+      "notifications": "Alerts about assignments, mentions and failed sends",
+      "contacts": "Everyone who has messaged you, with tags and custom fields",
+      "pipelines": "Track deals through your sales stages",
+      "broadcasts": "Send an approved template to many contacts at once",
+      "automations": "Rules that reply or tag on their own when something happens",
+      "flows": "Build multi-step conversations with branching replies",
+      "aiAgents": "Assistants that draft or send replies for you",
+      "settings": "WhatsApp connection, team, templates and account settings",
+      "accountMenu": "Open your profile, settings and sign out"
+    }
   },
   "Header": {
     "dashboard": "대시보드",
@@ -55,7 +68,11 @@
     "defaultAvatar": "아바타",
     "menuProfile": "프로필",
     "menuSettings": "설정",
-    "menuSignOut": "로그아웃"
+    "menuSignOut": "로그아웃",
+    "hints": {
+      "openMenu": "Show the navigation menu",
+      "accountMenu": "Open your profile, settings and sign out"
+    }
   },
   "ModeToggle": {
     "switchMode": "{mode} 모드로 전환"
@@ -190,6 +207,7 @@
       "typeMessagePlaceholder": "메시지를 입력하세요... (줄바꿈은 Shift+Enter)",
       "readOnlyTitle": "읽기 전용 — 현재 역할로는 메시지를 보낼 수 없습니다",
       "recording": "녹음 중… {current} / {max}",
+
       "cancel": "취소",
       "stopAndAttach": "중지하고 첨부",
       "attachMedia": "미디어 첨부",
@@ -209,7 +227,8 @@
       "send": "보내기",
       "quickReplyNamePrompt": "이 빠른 답장의 이름을 지정하세요:",
       "quickReplySaved": "빠른 답장으로 저장되었습니다.",
-      "quickReplySaveError": "빠른 답장을 저장하지 못했습니다."
+      "quickReplySaveError": "빠른 답장을 저장하지 못했습니다.",
+      "sendMessage": "Send this message"
     },
     "bubble": {
       "photo": "사진",
@@ -276,6 +295,7 @@
       "urlSuffixValuePlaceholder": "URL 접미사 값",
       "finalUrl": "최종 URL: {url}",
       "back": "뒤로",
+
       "cancel": "취소",
       "send": "템플릿 보내기"
     },
@@ -333,6 +353,7 @@
       "pageCount": "{total} 중 {page}페이지",
       "deleteContactTitle": "연락처 삭제",
       "deleteContactDesc": "{name}을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+
       "cancel": "취소",
       "deleteBtn": "삭제",
       "deleteBulkTitle": "연락처 삭제",
@@ -361,6 +382,7 @@
       "tagsPlaceholder": "태그 선택...",
       "noTagsFound": "태그를 찾을 수 없습니다.",
       "createTagAction": "\"{value}\" 태그 만들기",
+
       "cancel": "취소",
       "save": "연락처 저장",
       "update": "업데이트",
@@ -464,6 +486,7 @@
         "company": "회사",
         "tags": "태그"
       },
+
       "cancel": "취소",
       "close": "닫기",
       "importBtn": "{count}개 연락처 가져오기",
@@ -513,6 +536,7 @@
       "pipelineName": "파이프라인 이름",
       "pipelineNamePlaceholder": "예: 기업 영업",
       "defaultStagesDesc": "기본 단계(신규 리드 → 성사)가 자동으로 생성됩니다.",
+
       "cancel": "취소",
       "creating": "만드는 중...",
       "createPipelineBtn": "파이프라인 만들기",
@@ -551,6 +575,7 @@
       "markAsWon": "성사로 표시",
       "markAsLost": "실패로 표시",
       "reopenDeal": "딜 재개",
+
       "cancel": "취소",
       "saving": "저장 중...",
       "saveChanges": "변경 사항 저장",
@@ -577,6 +602,7 @@
       "managePipeline": "파이프라인 관리",
       "deletePipeline": "파이프라인 삭제",
       "deletePipelineDesc": "이 파이프라인의 모든 딜이 보관 처리됩니다. 되돌릴 수 없습니다.",
+
       "cancel": "취소",
       "deleting": "삭제 중...",
       "deletePipelineBtn": "파이프라인 삭제",
@@ -650,6 +676,7 @@
       "template": "템플릿: {name}",
       "createdAt": "{date} 생성",
       "deletePrompt": "이 브로드캐스트를 삭제하시겠습니까?",
+
       "cancel": "취소",
       "confirm": "확인",
       "deleting": "삭제 중…",
@@ -710,6 +737,7 @@
     "wizard": {
       "next": "다음",
       "back": "뒤로",
+
       "cancel": "취소",
       "chooseTemplate": {
         "title": "템플릿 선택",
@@ -821,6 +849,7 @@
       "duplicate": "복제",
       "viewLogs": "로그 보기",
       "delete": "삭제",
+
       "cancel": "취소",
       "deleteTitle": "자동화 삭제",
       "deleteDesc": "{name}과(와) 실행 기록이 영구적으로 삭제됩니다. 되돌릴 수 없습니다.",
@@ -1038,6 +1067,7 @@
       "nodeCount": "노드 {count}개",
       "startBlank": "또는 빈 상태로 시작",
       "placeholderName": "예: 환영 메뉴",
+
       "cancel": "취소",
       "createBlank": "빈 플로우 만들기",
       "runCount": "실행 {count}회",
@@ -1283,6 +1313,7 @@
       "revokedToast": "초대가 취소되었습니다",
       "removeDialogTitle": "멤버 제거",
       "removeDialogDesc": "<bold>{name}</bold>을(를) 이 계정에서 제거하시겠습니까? 이 계정에서 로그아웃되며 다음 로그인 시 새로운 개인 계정이 발급됩니다. 로그인 정보 자체는 삭제되지 않습니다.",
+
       "cancel": "취소",
       "removing": "제거 중...",
       "removeBtn": "멤버 제거"
@@ -1307,6 +1338,7 @@
       "optional": "(선택)",
       "labelPlaceholder": "예: Sara — 지원팀",
       "labelHint": "아래 대기 목록에서 링크를 누구에게 보냈는지 기억하는 데 도움이 됩니다.",
+
       "cancel": "취소",
       "creating": "만드는 중...",
       "generateLink": "링크 생성",
@@ -1337,6 +1369,7 @@
       "addTag": "태그 추가",
       "deleteTag": "태그 삭제",
       "deleteConfirm": "\"{name}\" 태그를 삭제하시겠습니까? 모든 연락처에서 제거되며 되돌릴 수 없습니다.",
+
       "cancel": "취소",
       "deleting": "삭제 중...",
       "colors": {
@@ -1536,7 +1569,22 @@
       "step4_3": "위의 <strong class=\"text-foreground\">웹훅 콜백 URL</strong>을 붙여넣기",
       "step4_4": "여기서 설정한 것과 동일한 <strong class=\"text-foreground\">인증 토큰</strong>을 입력",
       "step4_5": "\"messages\" 웹훅 필드를 구독",
-      "metaDocs": "Meta WhatsApp API 문서"
+      "metaDocs": "Meta WhatsApp API 문서",
+      "signupTitle": "Connect through Meta (recommended)",
+      "signupDesc": "Opens Meta's own panel to link your WhatsApp Business number in coexistence mode, so you keep using the phone app. No IDs to copy by hand.",
+      "signupCta": "Connect WhatsApp Business",
+      "signupConnecting": "Connecting…",
+      "signupAfter": "Once connected, set a Verify Token below and click Save Configuration.",
+      "hints": {
+        "connectMeta": "Opens Meta's login window to link your number",
+        "verifyWithMeta": "Ask Meta whether this number can receive messages right now",
+        "showToken": "Show the access token",
+        "hideToken": "Hide the access token",
+        "copyWebhook": "Copy this address to paste into Meta",
+        "saveConfig": "Check the credentials with Meta and save them",
+        "testConnection": "Send a test request to Meta to confirm the connection works",
+        "resetConfig": "Delete the saved credentials and start over"
+      }
     },
     "sections": {
       "overview": "개요",
@@ -1603,6 +1651,7 @@
       "signOutAll": "모든 기기에서 로그아웃",
       "signOutConfirmTitle": "모든 곳에서 로그아웃하시겠습니까?",
       "signOutConfirmDesc": "이 계정에 로그인된 모든 기기가 로그아웃되며 다시 로그인해야 합니다. 로그인 페이지로 이동합니다.",
+
       "cancel": "취소",
       "signingOut": "로그아웃 중…",
       "signOutEverywhere": "모든 곳에서 로그아웃",
@@ -1648,6 +1697,7 @@
       "namePlaceholder": "예: Zapier 자동화",
       "scopesLabel": "권한 범위",
       "scopesHint": "권한 범위가 없는 키도 <code>GET /api/v1/me</code>를 호출해 동작을 확인할 수 있습니다.",
+
       "cancel": "취소",
       "creating": "만드는 중…",
       "createKey": "키 생성",
@@ -1734,12 +1784,26 @@
       "editDocTitlePlaceholder": "예: 반품 & 환불 정책",
       "editDocContent": "내용",
       "editDocContentPlaceholder": "FAQ 답변, 정책 텍스트, 제품 정보를 붙여넣으세요…",
+
       "cancel": "취소",
       "saveDoc": "문서 저장",
       "addDoc": "문서 추가",
       "reindex": "재색인",
       "reindexTooltip": "모든 문서를 다시 임베딩합니다 (예: 임베딩 키 추가 후)",
       "loading": "불러오는 중…"
+    },
+    "sectionHints": {
+      "overview": "Status of every part of your workspace at a glance",
+      "profile": "Your name, photo and email address",
+      "security": "Change your password and sign out of other devices",
+      "appearance": "Interface language, light or dark mode, accent colour",
+      "whatsapp": "Connect your WhatsApp Business number to this CRM",
+      "templates": "Message templates you submit to Meta for approval",
+      "quick-replies": "Saved replies your team can insert while chatting",
+      "fields": "Custom contact fields and the tags used to segment people",
+      "deals": "Pipeline stages and the currency deals are valued in",
+      "members": "Invite teammates and set what each of them can do",
+      "api": "Keys for connecting other software to this CRM"
     }
   }
 }

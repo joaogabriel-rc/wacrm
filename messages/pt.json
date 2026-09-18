@@ -38,7 +38,20 @@
     "defaultAvatar": "Avatar",
     "menuProfile": "Perfil",
     "menuSettings": "Configurações",
-    "menuSignOut": "Sair"
+    "menuSignOut": "Sair",
+    "hints": {
+      "dashboard": "Visão geral de conversas, contatos e negócios",
+      "inbox": "Leia e responda às conversas do WhatsApp",
+      "notifications": "Avisos de atribuições, menções e envios que falharam",
+      "contacts": "Todos que já te escreveram, com etiquetas e campos personalizados",
+      "pipelines": "Acompanhe negócios pelas etapas da sua venda",
+      "broadcasts": "Envie um template aprovado para vários contatos de uma vez",
+      "automations": "Regras que respondem ou etiquetam sozinhas quando algo acontece",
+      "flows": "Monte conversas de várias etapas com respostas ramificadas",
+      "aiAgents": "Assistentes que redigem ou enviam respostas por você",
+      "settings": "Conexão do WhatsApp, equipe, templates e ajustes da conta",
+      "accountMenu": "Abrir seu perfil, ajustes e sair"
+    }
   },
   "Header": {
     "dashboard": "Dashboard",
@@ -55,7 +68,11 @@
     "defaultAvatar": "Avatar",
     "menuProfile": "Perfil",
     "menuSettings": "Configurações",
-    "menuSignOut": "Sair"
+    "menuSignOut": "Sair",
+    "hints": {
+      "openMenu": "Mostrar o menu de navegação",
+      "accountMenu": "Abrir seu perfil, ajustes e sair"
+    }
   },
   "ModeToggle": {
     "switchMode": "Mudar para modo {mode}"
@@ -209,7 +226,8 @@
       "send": "Enviar",
       "quickReplyNamePrompt": "Dê um nome a esta resposta rápida:",
       "quickReplySaved": "Salvo como resposta rápida.",
-      "quickReplySaveError": "Não foi possível salvar a resposta rápida."
+      "quickReplySaveError": "Não foi possível salvar a resposta rápida.",
+      "sendMessage": "Enviar esta mensagem"
     },
     "bubble": {
       "photo": "Foto",
@@ -1526,7 +1544,22 @@
       "step4_3": "Cole a <strong class=\"text-foreground\">URL de Callback do Webhook</strong> acima",
       "step4_4": "Insira o mesmo <strong class=\"text-foreground\">Token de Verificação</strong> que você definiu aqui",
       "step4_5": "Inscreva-se no campo de webhook \"messages\"",
-      "metaDocs": "Documentação da API do WhatsApp do Meta"
+      "metaDocs": "Documentação da API do WhatsApp do Meta",
+      "signupTitle": "Conectar pela Meta (recomendado)",
+      "signupDesc": "Abre o painel da própria Meta para vincular seu número WhatsApp Business em modo coexistência, mantendo o uso do aplicativo no celular. Sem copiar IDs à mão.",
+      "signupCta": "Conectar WhatsApp Business",
+      "signupConnecting": "Conectando…",
+      "signupAfter": "Depois de conectar, defina um Verify Token abaixo e clique em Salvar Configuração.",
+      "hints": {
+        "connectMeta": "Abre a janela de login da Meta para vincular seu número",
+        "verifyWithMeta": "Perguntar à Meta se este número consegue receber mensagens agora",
+        "showToken": "Mostrar o token de acesso",
+        "hideToken": "Ocultar o token de acesso",
+        "copyWebhook": "Copiar este endereço para colar na Meta",
+        "saveConfig": "Conferir as credenciais com a Meta e salvá-las",
+        "testConnection": "Enviar uma requisição de teste à Meta para confirmar a conexão",
+        "resetConfig": "Apagar as credenciais salvas e começar de novo"
+      }
     },
     "sections": {
       "overview": "Visão geral",
@@ -1728,6 +1761,19 @@
       "reindex": "Reindexar",
       "reindexTooltip": "Reincorporar todos os documentos (ex.: após adicionar uma chave de embeddings)",
       "loading": "Carregando…"
+    },
+    "sectionHints": {
+      "overview": "O estado de cada parte do seu espaço de trabalho num relance",
+      "profile": "Seu nome, foto e endereço de e-mail",
+      "security": "Trocar a senha e sair dos outros dispositivos",
+      "appearance": "Idioma da interface, modo claro ou escuro, cor de destaque",
+      "whatsapp": "Conectar seu número WhatsApp Business a este CRM",
+      "templates": "Templates de mensagem que você envia à Meta para aprovação",
+      "quick-replies": "Respostas salvas que sua equipe insere durante o atendimento",
+      "fields": "Campos personalizados de contato e as etiquetas que segmentam pessoas",
+      "deals": "Etapas do funil e a moeda em que os negócios são avaliados",
+      "members": "Convidar colegas e definir o que cada um pode fazer",
+      "api": "Chaves para conectar outros sistemas a este CRM"
     }
   }
 }

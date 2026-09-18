@@ -4,6 +4,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
+import { Hint } from '@/components/ui/hint';
 import {
   RAIL_GROUPS,
   SECTION_META,
@@ -74,8 +75,15 @@ export function SettingsRail({
               const Icon = meta.icon;
               const isActive = s === active;
               return (
-                <button
+                // `sectionHints` (what the section is for) is distinct
+                // from the `hints` prop above, which carries live status
+                // chips rendered inside the row.
+                <Hint
                   key={s}
+                  label={t(`sectionHints.${s}`)}
+                  side="right"
+                >
+                <button
                   ref={isActive ? activeRef : undefined}
                   type="button"
                   onClick={() => onSelect(s)}
@@ -101,6 +109,7 @@ export function SettingsRail({
                     </span>
                   ) : null}
                 </button>
+                </Hint>
               );
             })}
           </div>

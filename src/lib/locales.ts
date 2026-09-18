@@ -9,9 +9,13 @@
  *   1. Add `messages/<id>.json` with every key from `en.json`
  *      (`src/i18n/messages.test.ts` guards the parity).
  *   2. Append an entry below. The order here drives the picker.
+ *
+ * `messages/ko.json` ships with the upstream project but is not
+ * offered here — this deployment supports English and Portuguese.
+ * Adding it back is the two steps above, nothing more.
  */
 
-export const LOCALE_IDS = ["en", "pt", "ko"] as const;
+export const LOCALE_IDS = ["en", "pt"] as const;
 
 export type Locale = (typeof LOCALE_IDS)[number];
 
@@ -47,7 +51,6 @@ export interface LocaleMeta {
 export const LOCALES: LocaleMeta[] = [
   { id: "en", name: "English", region: "United States", flag: "🇺🇸" },
   { id: "pt", name: "Português", region: "Brasil", flag: "🇧🇷" },
-  { id: "ko", name: "한국어", region: "대한민국", flag: "🇰🇷" },
 ];
 
 export function isLocale(value: unknown): value is Locale {
