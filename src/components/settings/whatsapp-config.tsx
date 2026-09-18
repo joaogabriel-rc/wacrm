@@ -382,19 +382,23 @@ export function WhatsAppConfig() {
         method: 'GET',
       });
       const data = (await res.json()) as RegistrationProbe;
-      setRegistrationProbe(data);
-      if (data.live) {
-        toast.success('Number is fully wired — Meta is delivering events.');
-      } else {
-        toast.error(
-          'Number is not fully registered. See the checks below for which step failed.',
-          { duration: 8000 },
-        );
-      }
+
+      // Refresh the row FIRST. fetchConfig clears any stale probe on its
+      // way through, so storing this run's result before it runs meant
+      // the panel was populated and wiped inside the same click — the
+      // toast pointed at "the checks below" and there were never any
+      // checks below.
       if (accountId) await fetchConfig(accountId);
+      setRegistrationProbe(data);
+
+      if (data.live) {
+        toast.success(t('verifyLive'));
+      } else {
+        toast.error(t('verifyNotLive'), { duration: 8000 });
+      }
     } catch (err) {
       console.error('verify-registration failed:', err);
-      toast.error('Could not reach the verification endpoint.');
+      toast.error(t('verifyUnreachable'));
     } finally {
       setVerifyingRegistration(false);
     }

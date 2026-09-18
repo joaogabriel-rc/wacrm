@@ -1565,7 +1565,10 @@
       "signupNeedsToken": "Seu número foi vinculado na Meta, mas a Meta não devolveu um token de acesso para este app. Os IDs abaixo já foram preenchidos — cole um token de acesso permanente e clique em Salvar Configuração.",
       "signupFailed": "Não foi possível concluir a conexão. Tente novamente.",
       "signupNoNumbers": "Nenhum número de telefone encontrado nessa conta WhatsApp Business.",
-      "signupDetected": "Número {number} encontrado. Defina um Verify Token abaixo e clique em Salvar Configuração."
+      "signupDetected": "Número {number} encontrado. Defina um Verify Token abaixo e clique em Salvar Configuração.",
+      "verifyLive": "Número totalmente conectado — a Meta está entregando eventos.",
+      "verifyNotLive": "Número não está totalmente registrado. Veja abaixo qual etapa falhou.",
+      "verifyUnreachable": "Não foi possível acessar o endpoint de verificação."
     },
     "sections": {
       "overview": "Visão geral",
