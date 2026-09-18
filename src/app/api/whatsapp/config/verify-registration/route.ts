@@ -180,6 +180,26 @@ export async function GET(request: Request) {
         'to your hosting environment variables (Meta → App settings → Basic ' +
         '→ App secret) and redeploy.',
     )
+
+    // Names only, never values. A secret that was added under a slightly
+    // wrong name — a typo, a stray space, a NEXT_PUBLIC_ prefix — is
+    // indistinguishable from one that was never added at all, and on a
+    // hosted platform there is no shell to go and look. Listing what the
+    // runtime actually sees separates the two in one click.
+    const metaVars = Object.keys(process.env)
+      .filter((k) => /META/i.test(k))
+      .sort()
+    errors.push(
+      metaVars.length
+        ? `META-related variables this server can see: ${metaVars.join(', ')}. ` +
+            'If the secret is in that list under another name, rename it to ' +
+            'META_APP_SECRET exactly.'
+        : 'This server sees no META-related environment variable at all, so ' +
+            'the value was never applied to the running deployment. On Vercel, ' +
+            'adding a variable does not affect deployments that are already ' +
+            'live — redeploy after saving it, and check it is enabled for the ' +
+            'Production environment.',
+    )
   } else if (!appId) {
     errors.push(
       'NEXT_PUBLIC_META_APP_ID is not set, so the app webhook registration ' +
