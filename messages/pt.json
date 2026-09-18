@@ -1598,7 +1598,10 @@
     },
     "appearance": {
       "title": "Aparência",
-      "description": "Defina o modo e a cor de destaque usados no app. Salvo neste dispositivo — experimente, muda em tempo real.",
+      "description": "Defina o idioma, o modo e a cor de destaque usados no app. Experimente — tudo muda em tempo real.",
+      "language": "Idioma",
+      "languageDescription": "Escolha o idioma usado em toda a interface. Salvo na sua conta — vale em qualquer dispositivo onde você entrar.",
+      "useLanguage": "Usar {name}",
       "mode": "Modo",
       "useMode": "Usar modo {mode}",
       "active": "Ativo",

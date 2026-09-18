@@ -1,28 +1,47 @@
 "use client";
 
-import { Check, Moon, Palette, SunMoon, Sun } from "lucide-react";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { Check, Languages, Loader2, Moon, Palette, SunMoon, Sun } from "lucide-react";
 
+import { setLocale } from "@/app/actions/locale";
 import { useTheme } from "@/hooks/use-theme";
+import { LOCALES, type Locale, type LocaleMeta } from "@/lib/locales";
 import { MODES, THEMES, type Mode, type ThemeId } from "@/lib/themes";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { SettingsPanelHead } from "./settings-panel-head";
 
 /**
- * Appearance panel — light/dark mode + accent-color picker.
+ * Appearance panel — interface language + light/dark mode + accent-color
+ * picker.
  *
- * Two independent controls: a mode toggle (light / dark) and the
- * accent grid. Either applies + persists immediately. No save button:
- * each change is a single attribute swap on <html>, there's nothing
- * to roll back.
+ * Three independent controls. Each applies + persists immediately; no
+ * save button, since every change is reversible with one more click.
  *
- * Persistence: localStorage only (device-scoped). The boot script in
- * layout.tsx replays both choices before first paint on subsequent
- * loads.
+ * Persistence differs by control: mode and accent live in localStorage
+ * (device-scoped, replayed by the boot script in layout.tsx before
+ * first paint), while the language lives in a cookie — the dictionary
+ * is picked server-side in `src/i18n/request.ts`, so the choice has to
+ * travel with the request.
  */
 export function AppearancePanel() {
   const { theme, setTheme, mode, setMode } = useTheme();
   const t = useTranslations("Settings.appearance");
+  const activeLocale = useLocale();
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+
+  const pickLocale = (next: Locale) => {
+    if (next === activeLocale) return;
+    startTransition(async () => {
+      await setLocale(next);
+      // The cookie is only read on the next server render, so pull a
+      // fresh tree — otherwise the page keeps the old dictionary until
+      // a hard reload.
+      router.refresh();
+    });
+  };
 
   return (
     <section className="max-w-3xl animate-in fade-in-50 duration-200">
@@ -32,6 +51,35 @@ export function AppearancePanel() {
       />
 
       <div className="space-y-4">
+        <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
+          <Languages className="size-4 text-muted-foreground" />
+          {t("language")}
+          {pending && (
+            <Loader2 className="size-3.5 animate-spin text-muted-foreground" />
+          )}
+        </h3>
+        <p className="-mt-2 text-xs leading-relaxed text-muted-foreground">
+          {t("languageDescription")}
+        </p>
+
+        <div
+          role="radiogroup"
+          aria-label={t("language")}
+          className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {LOCALES.map((l) => (
+            <LocaleCard
+              key={l.id}
+              locale={l}
+              isActive={l.id === activeLocale}
+              disabled={pending}
+              onPick={() => pickLocale(l.id)}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-8 space-y-4">
         <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
           <SunMoon className="size-4 text-muted-foreground" />
           {t("mode")}
@@ -74,6 +122,55 @@ export function AppearancePanel() {
         </div>
       </div>
     </section>
+  );
+}
+
+function LocaleCard({
+  locale,
+  isActive,
+  disabled,
+  onPick,
+}: {
+  locale: LocaleMeta;
+  isActive: boolean;
+  disabled: boolean;
+  onPick: () => void;
+}) {
+  const t = useTranslations("Settings.appearance");
+  return (
+    <button
+      type="button"
+      role="radio"
+      onClick={onPick}
+      disabled={disabled}
+      aria-checked={isActive}
+      aria-label={t("useLanguage", { name: locale.name })}
+      className={cn(
+        "flex items-center gap-3 rounded-lg border bg-card p-4 text-left transition-colors",
+        "disabled:cursor-not-allowed disabled:opacity-60",
+        isActive
+          ? "border-primary/60 ring-2 ring-primary/40"
+          : "border-border hover:border-border hover:bg-muted/40",
+      )}
+    >
+      <span
+        aria-hidden
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-lg leading-none"
+      >
+        {locale.flag}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-sm font-semibold text-foreground">
+          {locale.name}
+        </span>
+        <span className="block truncate text-xs text-muted-foreground">
+          {locale.region}
+        </span>
+      </span>
+      {isActive && (
+        <Check className="size-4 shrink-0 text-primary" aria-hidden />
+      )}
+    </button>
   );
 }
 

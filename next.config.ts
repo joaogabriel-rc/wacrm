@@ -148,6 +148,11 @@ const nextConfig: NextConfig = {
             value:
               "public, max-age=0, s-maxage=300, stale-while-revalidate=86400",
           },
+          // NOTE: this shared-cache window is safe only while every
+          // visitor renders the same bytes. Once a visitor picks an
+          // interface language the response varies by cookie, so
+          // src/middleware.ts downgrades those requests to
+          // `private, no-store`.
         ],
       },
       {

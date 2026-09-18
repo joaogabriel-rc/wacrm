@@ -1,6 +1,39 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+import { LOCALE_COOKIE } from '@/lib/locales'
+
+/**
+ * Keep locale-varying HTML out of shared caches.
+ *
+ * next.config.ts marks HTML `public, s-maxage=300` so a CDN absorbs
+ * the stale-chunk problem after a deploy. That is safe only while
+ * every visitor renders the same bytes — but the interface language
+ * is now resolved server-side from the `wacrm.locale` cookie (see
+ * src/i18n/request.ts), so a visitor who picked Portuguese would seed
+ * the edge with a Portuguese /login and the next English visitor
+ * would be served it for up to s-maxage.
+ *
+ * `Vary: Cookie` would be the textbook fix, but Next writes its own
+ * Vary (rsc, next-router-*) onto the rendered response and that
+ * replaces anything set here or in next.config's `headers()`.
+ * Cache-Control, by contrast, does survive from middleware — verified
+ * against a production build — so we downgrade it instead.
+ *
+ * Scoped to requests that actually carry the cookie: visitors who
+ * never picked a language all render NEXT_PUBLIC_APP_LOCALE, share
+ * one set of bytes, and keep the edge caching exactly as before.
+ */
+function guardLocaleCache<T extends NextResponse>(
+  request: NextRequest,
+  response: T,
+): T {
+  if (request.cookies.has(LOCALE_COOKIE)) {
+    response.headers.set('Cache-Control', 'private, no-store')
+  }
+  return response
+}
+
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
@@ -39,7 +72,7 @@ export async function middleware(request: NextRequest) {
     supabaseResponse.cookies.getAll().forEach((cookie) => {
       response.cookies.set(cookie)
     })
-    return response
+    return guardLocaleCache(request, response)
   }
 
   // Auth pages - redirect to dashboard if already logged in.
@@ -85,7 +118,7 @@ export async function middleware(request: NextRequest) {
     )
   }
 
-  return supabaseResponse
+  return guardLocaleCache(request, supabaseResponse)
 }
 
 export const config = {

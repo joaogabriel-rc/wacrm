@@ -1610,7 +1610,10 @@
     },
     "appearance": {
       "title": "Appearance",
-      "description": "Set the mode and accent colour used across the app. Saved to this device — try it, it changes live.",
+      "description": "Set the language, mode and accent colour used across the app. Try them — everything changes live.",
+      "language": "Language",
+      "languageDescription": "Choose the language used across the whole interface. Saved to your account — it applies on every device you sign in from.",
+      "useLanguage": "Use {name}",
       "mode": "Mode",
       "useMode": "Use {mode} mode",
       "active": "Active",
